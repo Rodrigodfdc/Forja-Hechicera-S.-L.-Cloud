@@ -14,6 +14,7 @@ tableextension 50000 ItemTableExt extends Item
             DataClassification = ToBeClassified;
             //-> cambio
             //-> otro cambio
+            // -> tercer cambio
         }
         field(50003; CursedGrade; Enum CursedGrade)
         {

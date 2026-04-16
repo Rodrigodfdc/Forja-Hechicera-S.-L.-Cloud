@@ -16,10 +16,16 @@ page 50000 CursedWeaponList
                 {
                     ApplicationArea = All;
                 }
-                field(ItemNo; Rec.ItemNo)
+
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                 }
+
+                // field(ItemNo; Rec.ItemNo)
+                // {
+                //     ApplicationArea = All;
+                // }
 
                 field(CursedGrade; Rec.CursedGrade)
                 {
@@ -30,11 +36,10 @@ page 50000 CursedWeaponList
                 {
                     ApplicationArea = All;
                 }
-
-                field(InnateTeq; Rec.InnateTeq)
-                {
-                    ApplicationArea = All;
-                }
+                // field(InnateTeq; Rec.InnateTeq)
+                // {
+                //     ApplicationArea = All;
+                // }
 
                 field(ThreatLevel; Rec.ThreatLevel)
                 {
@@ -46,20 +51,20 @@ page 50000 CursedWeaponList
                     ApplicationArea = All;
                 }
 
-                field(BindingVows; Rec.BindingVows)
-                {
-                    ApplicationArea = All;
-                }
+                // field(BindingVows; Rec.BindingVows)
+                // {
+                //     ApplicationArea = All;
+                // }
 
-                field(ForgerDate; Rec.ForgerDate)
-                {
-                    ApplicationArea = All;
-                }
+                // field(ForgerDate; Rec.ForgeDate)
+                // {
+                //     ApplicationArea = All;
+                // }
 
-                field(SoldToCustomerNo; Rec.SoldToCustomerNo)
-                {
-                    ApplicationArea = All;
-                }
+                // field(SoldToCustomerNo; Rec.SoldToCustomerNo)
+                // {
+                //     ApplicationArea = All;
+                // }
             }
         }
         area(Factboxes)

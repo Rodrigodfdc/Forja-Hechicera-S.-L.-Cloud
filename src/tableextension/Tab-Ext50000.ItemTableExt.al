@@ -9,7 +9,7 @@ tableextension 50000 ItemTableExt extends Item
             TableRelation = CursedWeapon;
         }
 
-        field(50002; IsCursedWeapon; Integer)
+        field(50002; IsCursedWeapon; Boolean)
         {
             DataClassification = ToBeClassified;
         }

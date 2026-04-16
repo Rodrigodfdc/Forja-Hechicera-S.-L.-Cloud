@@ -11,7 +11,7 @@ page 50001 CursedWeaponCard
         {
             group(GroupName)
             {
-                field(IdCursedWeapon; Rec.IdCursedWeapon)
+                field(IdCursedWeapon; Rec.No)
                 {
                     ApplicationArea = All;
                 }
@@ -47,7 +47,7 @@ page 50001 CursedWeaponCard
                     ApplicationArea = All;
                 }
 
-                field(ForgerDate; Rec.ForgerDate)
+                field(ForgerDate; Rec.ForgeDate)
                 {
                     ApplicationArea = All;
                 }

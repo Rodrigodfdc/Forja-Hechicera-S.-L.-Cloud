@@ -4,7 +4,7 @@ table 50000 CursedWeapon
 
     fields
     {
-        field(1; IdCursedWeapon; Integer)
+        field(1; No; code[20])
         {
             DataClassification = ToBeClassified;
         }
@@ -13,23 +13,22 @@ table 50000 CursedWeapon
         {
             DataClassification = ToBeClassified;
         }
-
-        field(3; CursedGrade; Enum CursedGrade)
+        field(3; Description; Text[100])
         {
             DataClassification = ToBeClassified;
         }
 
-        field(4; WeaponStatus; Enum WeaponStatus)
+        field(4; CursedGrade; Enum CursedGrade)
         {
             DataClassification = ToBeClassified;
         }
 
-        field(5; InnateTeq; Enum CurseTechniqueType)
+        field(5; WeaponStatus; Enum WeaponStatus)
         {
             DataClassification = ToBeClassified;
         }
 
-        field(6; ThreatLevel; Decimal)
+        field(6; InnateTeq; Enum CurseTechniqueType)
         {
             DataClassification = ToBeClassified;
         }
@@ -39,12 +38,18 @@ table 50000 CursedWeapon
             DataClassification = ToBeClassified;
         }
 
-        field(8; BindingVows; text[250])
+        field(8; BindingVows; Decimal)
+        {
+            DataClassification = ToBeClassified;
+            // Va a ser un campo calculado
+        }
+
+        field(9; ThreatLevel; Decimal)
         {
             DataClassification = ToBeClassified;
         }
 
-        field(10; ForgerDate; Date)
+        field(10; ForgeDate; Date)
         {
             DataClassification = ToBeClassified;
         }
@@ -52,13 +57,20 @@ table 50000 CursedWeapon
         field(11; SoldToCustomerNo; Code[20])
         {
             DataClassification = ToBeClassified;
+            //FK->Customer (se rellena al contabilizar el albaran)
+        }
+
+        field(12; Notes; Text[500])
+        {
+            DataClassification = ToBeClassified;
+            //Observaciones libres
         }
 
     }
 
     keys
     {
-        key(Key1; IdCursedWeapon)
+        key(Key1; No)
         {
             Clustered = true;
         }

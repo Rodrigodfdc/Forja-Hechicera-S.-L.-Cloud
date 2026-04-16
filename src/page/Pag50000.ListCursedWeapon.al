@@ -12,7 +12,7 @@ page 50000 CursedWeaponList
         {
             repeater(GroupName)
             {
-                field(IdCursedWeapon; Rec.IdCursedWeapon)
+                field(IdCursedWeapon; Rec.No)
                 {
                     ApplicationArea = All;
                 }

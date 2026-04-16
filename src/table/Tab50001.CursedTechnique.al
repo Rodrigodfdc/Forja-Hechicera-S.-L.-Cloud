@@ -4,7 +4,7 @@ table 50001 CursedTechnique
 
     fields
     {
-        field(1; IdCursedTechique; Integer)
+        field(1; Code; Code[10])
         {
             DataClassification = ToBeClassified;
         }
@@ -25,11 +25,15 @@ table 50001 CursedTechnique
         {
             DataClassification = ToBeClassified;
         }
+        field(6; IsActive; Boolean)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys
     {
-        key(Key1; IdCursedTechique)
+        key(Key1; Code)
         {
             Clustered = true;
         }

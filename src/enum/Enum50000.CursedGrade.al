@@ -11,18 +11,22 @@ enum 50000 CursedGrade
     {
 
     }
+
     value(2; SemiGrade1)
     {
 
     }
+
     value(3; SemiGrade2)
     {
 
     }
+
     value(4; Grade1)
     {
 
     }
+
     value(5; Grade2)
     {
 

@@ -2,7 +2,6 @@ enum 50002 CurseTechniqueType
 {
     Extensible = true;
 
-
     value(0; " ")
     {
 
@@ -12,18 +11,22 @@ enum 50002 CurseTechniqueType
     {
 
     }
+
     value(2; NegativeCalm)
     {
 
     }
+
     value(3; Tetragrammaton)
     {
 
     }
+
     value(4; Resonance)
     {
 
     }
+
     value(5; None)
     {
 
@@ -33,6 +36,5 @@ enum 50002 CurseTechniqueType
     {
 
     }
-
 
 }

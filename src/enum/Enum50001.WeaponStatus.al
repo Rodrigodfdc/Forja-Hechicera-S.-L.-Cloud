@@ -11,10 +11,12 @@ enum 50001 WeaponStatus
     {
 
     }
+
     value(2; Active)
     {
 
     }
+
     value(3; Sealed)
     {
 

@@ -8,11 +8,11 @@ table 50002 WeaponLifecycleEntry
         {
             DataClassification = ToBeClassified;
         }
-        field(2; WeaponNo; Integer)
+        field(2; WeaponNo; Code[20])
         {
             DataClassification = ToBeClassified;
         }
-        field(3; EntryDate; Integer)
+        field(3; EntryDate; DateTime)
         {
             DataClassification = ToBeClassified;
         }
@@ -24,15 +24,18 @@ table 50002 WeaponLifecycleEntry
         {
             DataClassification = ToBeClassified;
         }
-        field(6; Reason; Text[50])
+        field(6; Reason; Text[150])
         {
             DataClassification = ToBeClassified;
         }
-        field(7; MyField; Integer)
+        field(7; UserID; Integer)
         {
             DataClassification = ToBeClassified;
         }
-
+        field(8; ThreatLevelAtEntry; Decimal)
+        {
+            DataClassification = ToBeClassified;
+        }
     }
 
     keys

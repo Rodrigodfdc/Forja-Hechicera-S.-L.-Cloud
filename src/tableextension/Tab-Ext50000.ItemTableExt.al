@@ -12,14 +12,16 @@ tableextension 50000 ItemTableExt extends Item
         field(50002; IsCursedWeapon; Boolean)
         {
             DataClassification = ToBeClassified;
+            //-> cambio
         }
         field(50003; CursedGrade; Enum CursedGrade)
         {
             DataClassification = ToBeClassified;
         }
-        field(50004; QuickThreatLevel; Integer)
+        field(50004; QuickThreatLevel; Decimal)
         {
             DataClassification = ToBeClassified;
+            //FlowField -> CalcFormula lookup a CursedWeapon.ThreatLevel
         }
 
     }

@@ -12,14 +12,50 @@ page 50002 WeaponLifecycleList
             repeater(GroupName)
             {
 
-                // -> historial de cambios — solo lectura, sin editar ni borrar.
-                // field(FieldSource; Rec.FieldSource)
-                // {
-                //     ApplicationArea = All;
-                // }
+                field(EntryNo; Rec.EntryNo)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(WeaponNo; Rec.WeaponNo)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(EntryDate; Rec.EntryDate)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(OldStatus; Rec.OldStatus)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(NewStatus; Rec.NewStatus)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(Reason; Rec.Reason)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(UserID; Rec.UserID)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(ThreatLevelAtEntry; Rec.ThreatLevelAtEntry)
+                {
+                    ApplicationArea = All;
+                }
 
             }
+
         }
+
         area(Factboxes)
         {
 

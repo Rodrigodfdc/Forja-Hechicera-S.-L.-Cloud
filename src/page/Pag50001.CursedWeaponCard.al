@@ -11,14 +11,16 @@ page 50001 CursedWeaponCard
         {
             group(GroupName)
             {
-                field(IdCursedWeapon; Rec.No)
+                field(No; Rec.No)
                 {
                     ApplicationArea = All;
                 }
+
                 field(ItemNo; Rec.ItemNo)
                 {
                     ApplicationArea = All;
                 }
+
                 field(CursedGrade; Rec.CursedGrade)
                 {
                     ApplicationArea = All;
@@ -33,10 +35,12 @@ page 50001 CursedWeaponCard
                 {
                     ApplicationArea = All;
                 }
+
                 field(ThreatLevel; Rec.ThreatLevel)
                 {
                     ApplicationArea = All;
                 }
+
                 field(ForgerName; Rec.ForgerName)
                 {
                     ApplicationArea = All;

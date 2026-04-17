@@ -6,6 +6,7 @@ table 50001 CursedTechnique
     {
         field(1; Code; Code[10])
         {
+            Caption = 'No', Comment = 'ESP="Código"';
             DataClassification = ToBeClassified;
         }
 

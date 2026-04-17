@@ -21,10 +21,6 @@ page 50003 CursedTechniquesList
                 {
                     ApplicationArea = All;
                 }
-                field(Description; Rec.Description)
-                {
-                    ApplicationArea = All;
-                }
 
                 field(EnergyMultipler; Rec.EnergyMultipler)
                 {
@@ -34,7 +30,13 @@ page 50003 CursedTechniquesList
                 {
                     ApplicationArea = All;
                 }
+
                 field(IsActive; Rec.IsActive)
+                {
+                    ApplicationArea = All;
+                }
+
+                field(Description; Rec.Description)
                 {
                     ApplicationArea = All;
                 }

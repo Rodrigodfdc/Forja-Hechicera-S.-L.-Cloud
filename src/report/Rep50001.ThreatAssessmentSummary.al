@@ -1,19 +1,19 @@
-// report 50000 CursedWeaponInventory
+// report 50001
 // {
 //     UsageCategory = ReportsAndAnalysis;
 //     ApplicationArea = All;
 //     DefaultRenderingLayout = LayoutName;
 
-//     // dataset
-//     // {
-//     //     dataitem(DataItemName; SourceTableName)
-//     //     {
-//     //         column(ColumnName; SourceFieldName)
-//     //         {
+//     dataset
+//     {
+//         dataitem(DataItemName; SourceTableName)
+//         {
+//             column(ColumnName; SourceFieldName)
+//             {
 
-//     //         }
-//     //     }
-//     // }
+//             }
+//         }
+//     }
 
 //     requestpage
 //     {
@@ -25,10 +25,10 @@
 //             {
 //                 group(GroupName)
 //                 {
-//                     // field(Name; SourceExpression)
-//                     // {
+//                     field(Name; SourceExpression)
+//                     {
 
-//                     // }
+//                     }
 //                 }
 //             }
 //         }

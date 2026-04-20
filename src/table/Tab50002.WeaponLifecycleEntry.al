@@ -6,6 +6,7 @@ table 50002 WeaponLifecycleEntry
     {
         field(1; EntryNo; Integer)
         {
+            TableRelation = "No. Series";
             DataClassification = ToBeClassified;
         }
         field(2; WeaponNo; Code[20])

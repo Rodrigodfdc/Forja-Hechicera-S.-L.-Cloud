@@ -6,9 +6,13 @@ table 50000 CursedWeapon
     {
         field(1; No; Integer)
         {
+
             Caption = 'No', Comment = 'ESP="Numero de serie"';
             AutoIncrement = true;
             Editable = false;
+            DataClassification = ToBeClassified;
+            TableRelation = "No. Series";
+
         }
 
         field(2; ItemNo; Code[20])

@@ -30,6 +30,7 @@ table 50001 CursedTechnique
         {
             DataClassification = ToBeClassified;
         }
+
     }
 
     keys

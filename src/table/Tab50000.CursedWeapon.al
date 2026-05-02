@@ -1,109 +1,80 @@
-table 50000 CursedWeapon
+table 50000 "Cursed Weapon"
 {
-    DataClassification = ToBeClassified;
-
-    // Lore — El registro de cada arma En Forja Hechicera, cada arma especial es única e irrepetible.
-    // La Katana de Toji no es un producto de stock anónimo — es una pieza con historia, con un forjador conocido, con votos de vinculación específicos
-    // y con un nivel de amenaza medido. Esta tabla es el equivalente al DNI de cada arma del catálogo.
+    DataClassification = CustomerContent;
+    Caption = 'Cursed Weapon';
 
     fields
     {
-        field(1; No; Integer)
+        field(1; "No."; Code[20])
         {
-            Caption = 'No', Comment = 'ESP="Numero de serie"';
-            AutoIncrement = true;
-            Editable = false;
-            DataClassification = ToBeClassified;
-            TableRelation = "No. Series";
-            //-> Código del arma — mismo valor que Item.No.
+            Caption = 'No.';
+            TableRelation = Item;
         }
-
         field(2; ItemNo; Code[20])
         {
-            Caption = 'Item No', Comment = 'ESP="Numero de serie Item"';
-            DataClassification = ToBeClassified;
-            //-> Articulo estándar BC vinculado vía TableRelation
+            Caption = 'Item No.';
+            TableRelation = Item;
         }
         field(3; Description; Text[100])
         {
-            Caption = 'Description', Comment = 'ESP="Descripción"';
-            DataClassification = ToBeClassified;
-            // -> Nombre descriptivo del arma
+            Caption = 'Description';
         }
-
-        field(4; CursedGrade; Enum CursedGrade)
+        field(4; CursedGrade; Enum "Cursed Grade")
         {
-            Caption = 'CurseGrade', Comment = 'ESP="Grado de maldición"';
-            DataClassification = ToBeClassified;
-            // --> Grado de maldicion — controla restricciones de venta en ValidateSaleAuthorization
+            Caption = 'Cursed Grade';
         }
-
-        field(5; WeaponStatus; Enum WeaponStatus)
+        field(5; WeaponStatus; Enum "Weapon Status")
         {
-            Caption = 'Weapon Status', Comment = 'ESP="Estado del arma"';
-            DataClassification = ToBeClassified;
-            //-> Estado actual — NUNCA se cambia directamente, solo via ChangeWeaponStatus()
+            Caption = 'Weapon Status';
+            Editable = false; // Solo via CursedWeaponMgt.ChangeWeaponStatus()
         }
-
-        field(6; InnateTeq; Enum CurseTechniqueType)
+        field(6; InnateTeq; Enum "Cursed Technique Type")
         {
-            Caption = 'InnateTeq', Comment = 'ESP="Técnica innata"';
-            DataClassification = ToBeClassified;
-            // -> Tecnica innata — su EnergyMultiplier entra en CalculateThreatLevel
+            Caption = 'Innate Technique';
         }
-
-        field(7; ForgerName; text[50])
+        field(7; ForgerName; Text[50])
         {
-            Caption = 'ForgerName', Comment = 'ESP="Nombre del forjador"';
-            DataClassification = ToBeClassified;
-            // -> Nombre del forjador — se usa para rastrear la responsabilidad
+            Caption = 'Forger Name';
         }
-
-        field(8; BindingVows; Decimal)
+        field(8; BindingVows; Text[250])
         {
-            Caption = 'BindingVows', Comment = 'ESP="Voto vinculante"';
-            DataClassification = ToBeClassified;
-            // Votos de vinculacion — si no esta vacio, ThreatLevel recibe +20% de bonus
+            Caption = 'Binding Vows';
         }
-
         field(9; ThreatLevel; Decimal)
         {
-            Caption = 'ThreatLevel', Comment = 'ESP="Nivel de amenaza"';
-            DataClassification = ToBeClassified;
-            // -> Nivel de amenaza calculado por CursedWeaponMgt.CalculateThreatLevel() — no editable
-
+            Caption = 'Threat Level';
+            Editable = false;
+            DecimalPlaces = 2 : 2;
         }
-
         field(10; ForgeDate; Date)
         {
-            Caption = 'ForgeDate', Comment = 'ESP="Fecha de forja"';
-            DataClassification = ToBeClassified;
-            // ->  Fecha de forja — se rellena automaticamente al completar el Assembly Order
+            Caption = 'Forge Date';
         }
-
         field(11; SoldToCustomerNo; Code[20])
         {
-            Caption = 'SoldToCustomerNo', Comment = 'ESP="Numero de venta al cliente"';
-            DataClassification = ToBeClassified;
-            //FK-> Customer (se rellena al contabilizar el albarán)
+            Caption = 'Sold-to Customer No.';
+            TableRelation = Customer;
+            Editable = false;
         }
-
-        field(12; Notes; Text[500])
+        field(12; "No. Series"; Code[20])
         {
-            Caption = 'Notas', Comment = 'ESP="Notas"';
-            DataClassification = ToBeClassified;
-            //Observaciones libres
+            Caption = 'No. Series';
+            TableRelation = "No. Series";
         }
-
+        field(13; Notes; Text[500])
+        {
+            Caption = 'Notes';
+        }
     }
 
     keys
     {
-        key(Key1; No)
-        {
-            Clustered = true;
-        }
+        key(PK; "No.") { Clustered = true; }
+        key(Grade; CursedGrade) { }
+        key(Status; WeaponStatus) { }
     }
+
+
 
     fieldgroups
     {

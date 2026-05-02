@@ -1,73 +1,48 @@
-page 50004 CursedTechniquesCard
+page 50004 "Cursed Techniques Card"
 {
-    // Ficha de tecnica maldita. Todos los campos editables. 
-    // Necesaria para editar el campo Description que es multilinea y no se muestra bien en la lista.
-
     PageType = Card;
-    ApplicationArea = All;
+    SourceTable = "Cursed Technique";
+    Caption = 'Cursed Technique Card';
     UsageCategory = None;
-    SourceTable = CursedTechnique;
 
     layout
     {
         area(Content)
         {
-            group(GroupName)
+            group(General)
             {
+                Caption = 'General';
                 field(Code; Rec.Code)
                 {
-                    Caption = 'Código';
                     ApplicationArea = All;
-                    // -> PK — INF, NEG, TET...
                 }
                 field(Name; Rec.Name)
                 {
-                    Caption = 'Nombre';
                     ApplicationArea = All;
                 }
-                field(Description; Rec.Description)
+                field(EnergyMultiplier; Rec.EnergyMultiplier)
                 {
-                    Caption = 'Descripción';
                     ApplicationArea = All;
-                    // -> MultiLine = true
-                }
-                field(EnergyMultipler; Rec.EnergyMultipler)
-                {
-                    Caption = 'Multiplicador energía';
-                    ApplicationArea = All;
-                    // -> Decimal — formato 0.00
                 }
                 field(MinGrade; Rec.MinGrade)
                 {
-                    Caption = 'Minimo grado';
                     ApplicationArea = All;
-                    // -> Desplegable con CursedGrade
                 }
                 field(IsActive; Rec.IsActive)
                 {
-                    Caption = 'Está activo';
                     ApplicationArea = All;
-                    // -> Checkbox
+                }
+            }
+            group(DescGroup)
+            {
+                Caption = 'Description';
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                    ShowCaption = false;
+                    MultiLine = true;
                 }
             }
         }
     }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-
-                trigger OnAction()
-                begin
-
-                end;
-            }
-        }
-    }
-
-    var
-        myInt: Integer;
 }

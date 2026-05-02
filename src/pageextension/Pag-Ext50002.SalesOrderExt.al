@@ -1,15 +1,16 @@
-pageextension 50002 SalesOrderExt extends "Sales Order"
+pageextension 50002 "Sales Order Ext" extends "Sales Order"
 {
     layout
     {
-        // Add changes to page layout here
+        addlast(FactBoxes)
+        {
+            part(CursedWeaponInfo; "Weapon Lifecycle List Part")
+            {
+                ApplicationArea = All;
+                Caption = 'Cursed Weapon Info';
+                SubPageLink = "Weapon No." = field("No.");
+            }
+        }
     }
-
-    actions
-    {
-        // Add changes to page actions here
-    }
-
-    var
-        myInt: Integer;
 }
+

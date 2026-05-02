@@ -1,91 +1,89 @@
-page 50001 CursedWeaponCard
+page 50001 "Cursed Weapon Card"
 {
     PageType = Card;
-    ApplicationArea = All;
+    SourceTable = "Cursed Weapon";
+    Caption = 'Cursed Weapon Card';
     UsageCategory = None;
-    SourceTable = CursedWeapon;
 
     layout
     {
         area(Content)
         {
-            group(GroupName)
+            group(General)
             {
-                field(No; Rec.No)
+                Caption = 'General';
+                field("No."; Rec."No.")
                 {
                     ApplicationArea = All;
-                    // -> Al crear nuevo, se asigna automáticamente desde la serie CW
+                    ToolTip = 'Weapon identifier.';
                 }
-
                 field(Description; Rec.Description)
                 {
-                    Caption = 'Descripción';
                     ApplicationArea = All;
-                    // -> Descripción
                 }
-
                 field(CursedGrade; Rec.CursedGrade)
                 {
-                    Caption = 'Grado de maldición';
                     ApplicationArea = All;
-                    // -> Grado de la maldición
                 }
-
                 field(WeaponStatus; Rec.WeaponStatus)
                 {
-                    Caption = 'Estado del arma';
                     ApplicationArea = All;
-                    // -> Solo vía acción Cambiar Estado
+                    StyleExpr = StatusStyle;
                 }
-
                 field(InnateTeq; Rec.InnateTeq)
                 {
-                    Caption = 'Técnica innata';
                     ApplicationArea = All;
-                    // -> Desplegable con los valores del enum
                 }
-
-                field(ForgerName; Rec.ForgerName)
-                {
-                    Caption = 'Nombre del forjador';
-                    ApplicationArea = All;
-                    // -> Nombre del forjador
-                }
-
-                field(BindingVows; Rec.BindingVows)
-                {
-                    Caption = 'Votos vinculantes';
-                    ApplicationArea = All;
-                    // -> Campo multilínea — MultiLine = true
-                }
-
                 field(ThreatLevel; Rec.ThreatLevel)
                 {
-                    Caption = 'Nivel de amenaza';
                     ApplicationArea = All;
-                    // -> Calculado — se recalcula con la acción Calcular Amenaza
+                    Editable = false;
                 }
-
-                field(ForgerDate; Rec.ForgeDate)
+            }
+            group(ForgeDetails)
+            {
+                Caption = 'Forge Details';
+                field(ForgerName; Rec.ForgerName)
                 {
-                    Caption = 'Fecha de forja';
                     ApplicationArea = All;
-                    // -> fecha de forja
                 }
-
+                field(ForgeDate; Rec.ForgeDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(BindingVows; Rec.BindingVows)
+                {
+                    ApplicationArea = All;
+                    MultiLine = true;
+                }
+            }
+            group(SaleInfo)
+            {
+                Caption = 'Sale Information';
                 field(SoldToCustomerNo; Rec.SoldToCustomerNo)
                 {
-                    Caption = 'Número de clente comprador ';
                     ApplicationArea = All;
-                    // -> Se rellena automáticamente al contabilizar el albarán
+                    Editable = false;
                 }
-
-                field(Notes; Rec.Notes)
+            }
+            group(Notes)
+            {
+                Caption = 'Notes';
+                field(NotesField; Rec.Notes)
                 {
-                    Caption = 'Notas';
                     ApplicationArea = All;
-                    // -> Campo multilínea
+                    ShowCaption = false;
+                    MultiLine = true;
                 }
+            }
+        }
+        area(FactBoxes)
+        {
+            part(LifecyclePart; "Weapon Lifecycle List Part")
+            {
+                ApplicationArea = All;
+                Caption = 'Lifecycle History';
+                SubPageLink = "Weapon No." = field("No.");
             }
         }
     }
@@ -94,17 +92,67 @@ page 50001 CursedWeaponCard
     {
         area(Processing)
         {
-            action(ActionName)
+            action(CalculateThreat)
             {
-
+                Caption = 'Calculate Threat Level';
+                ApplicationArea = All;
+                Image = Calculate;
                 trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
                 begin
-
+                    Mgt.CalculateThreatLevel(Rec."No.");
+                    Rec.Get(Rec."No.");
+                    CurrPage.Update(false);
+                end;
+            }
+            action(ChangeStatus)
+            {
+                Caption = 'Change Status';
+                ApplicationArea = All;
+                Image = ChangeStatus;
+                trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                    NewStatus: Enum "Weapon Status";
+                    Reason: Text[150];
+                begin
+                    // Aqui puedes abrir un dialogo o pedir al usuario el nuevo estado
+                    // Simplificado: cambia a Active como ejemplo
+                    Reason := 'Manual status change';
+                    Mgt.ChangeWeaponStatus(Rec."No.", NewStatus, Reason);
+                    Rec.Get(Rec."No.");
+                    CurrPage.Update(false);
                 end;
             }
         }
     }
 
     var
-        myInt: Integer;
+        StatusStyle: Text;
+
+    trigger OnAfterGetRecord()
+    begin
+        case Rec.WeaponStatus of
+            Rec.WeaponStatus::Active:
+                StatusStyle := 'Favorable';
+            Rec.WeaponStatus::Sold:
+                StatusStyle := 'Strong';
+            Rec.WeaponStatus::Sealed:
+                StatusStyle := 'Attention';
+            Rec.WeaponStatus::Destroyed:
+                StatusStyle := 'Unfavorable';
+            else
+                StatusStyle := 'StandardAccent';
+        end;
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
+    begin
+        if Rec."No." = '' then
+            NoSeriesMgt.InitSeries('CW', '', Today, Rec."No.", Rec."No. Series");
+        Rec.WeaponStatus := Rec.WeaponStatus::Dormant;
+    end;
 }

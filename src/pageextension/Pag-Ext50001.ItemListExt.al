@@ -1,15 +1,32 @@
-pageextension 50001 ItemListExt extends "Item List"
+pageextension 50001 "Item List Ext" extends "Item List"
 {
     layout
     {
-        // Add changes to page layout here
+        addafter(Description)
+        {
+            field(IsCursedWeapon; Rec.IsCursedWeapon)
+            {
+                ApplicationArea = All;
+                Caption = 'Cursed';
+                Width = 5;
+            }
+            field(CursedGrade; Rec.CursedGrade)
+            {
+                ApplicationArea = All;
+                Caption = 'Grade';
+            }
+        }
     }
 
-    actions
+    views
     {
-        // Add changes to page actions here
+        addfirst
+        {
+            view(CursedWeaponsFilter)
+            {
+                Caption = 'Cursed Weapons';
+                Filters = where(IsCursedWeapon = const(true));
+            }
+        }
     }
-
-    var
-        myInt: Integer;
 }

@@ -1,29 +1,19 @@
-page 50002 "Weapon Lifecycle List"
+page 50006 "Weapon Lifecycle List Part"
 {
-    PageType = List;
+    PageType = ListPart;
     SourceTable = "Weapon Lifecycle Entry";
-    Caption = 'Weapon Lifecycle History';
+    Caption = 'Lifecycle History';
     Editable = false;
     InsertAllowed = false;
     ModifyAllowed = false;
     DeleteAllowed = false;
-    UsageCategory = Lists;
-    ApplicationArea = All;
 
     layout
     {
         area(Content)
         {
-            repeater(LifecycleEntries)
+            repeater(Entries)
             {
-                field("Entry No."; Rec."Entry No.")
-                {
-                    ApplicationArea = All;
-                }
-                field("Weapon No."; Rec."Weapon No.")
-                {
-                    ApplicationArea = All;
-                }
                 field(EntryDate; Rec.EntryDate)
                 {
                     ApplicationArea = All;
@@ -41,10 +31,6 @@ page 50002 "Weapon Lifecycle List"
                     ApplicationArea = All;
                 }
                 field(UserID; Rec.UserID)
-                {
-                    ApplicationArea = All;
-                }
-                field(ThreatLevelAtEntry; Rec.ThreatLevelAtEntry)
                 {
                     ApplicationArea = All;
                 }

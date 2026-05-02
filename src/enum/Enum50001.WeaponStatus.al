@@ -1,35 +1,25 @@
-enum 50001 WeaponStatus
+enum 50001 "Weapon Status"
 {
     Extensible = true;
 
-    value(0; " ")
-    {
-        Caption = ' ';
-    }
-
-    value(1; Dormant)
+    value(0; "Dormant")
     {
         Caption = 'Dormant';
-    }
-
-    value(2; Active)
+    }   // Estado inicial al crear
+    value(1; "Active")
     {
         Caption = 'Active';
-    }
-
-    value(3; Sealed)
+    }    // Al completar Assembly Order
+    value(2; "Sealed")
     {
         Caption = 'Sealed';
-    }
-
-    value(4; Destroyed)
+    }    // Sellada temporalmente
+    value(3; "Destroyed")
     {
         Caption = 'Destroyed';
-    }
-
-    value(5; Sold)
+    } // Destruida
+    value(4; "Sold")
     {
         Caption = 'Sold';
-    }
-
+    }      // Al contabilizar albaran
 }

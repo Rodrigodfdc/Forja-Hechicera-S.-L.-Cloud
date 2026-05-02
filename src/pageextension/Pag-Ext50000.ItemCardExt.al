@@ -1,19 +1,55 @@
-pageextension 50000 ItemCardExt extends "Item Card"
+pageextension 50000 "Item Card Ext" extends "Item Card"
 {
-
-    // Anade una pestana llamada Cursed Data a la ficha de articulo estandar. 
-    // Es el punto de union entre el mundo BC estandar y el modulo AL.
-
     layout
     {
-        // Add changes to page layout here
+        addlast(Item)
+        {
+            group(CursedDataGroup)
+            {
+                Caption = 'Cursed Data';
+
+                field(IsCursedWeapon; Rec.IsCursedWeapon)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Is Cursed Weapon';
+
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cursed Grade';
+                }
+                field(QuickThreatLevel; Rec.QuickThreatLevel)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Threat Level';
+                    Editable = false;
+                }
+            }
+        }
     }
 
     actions
     {
-        // Add changes to page actions here
+        addlast(processing)
+        {
+            action(ViewCursedWeapon)
+            {
+                Caption = 'View Cursed Weapon';
+                ApplicationArea = All;
+                Image = Item;
+                Visible = Rec.IsCursedWeapon;
+                trigger OnAction()
+                var
+                    CursedWeapon: Record "Cursed Weapon";
+                    CursedWeaponCard: Page "Cursed Weapon Card";
+                begin
+                    if CursedWeapon.Get(Rec."No.") then begin
+                        CursedWeaponCard.SetRecord(CursedWeapon);
+                        CursedWeaponCard.Run();
+                    end;
+                end;
+            }
+        }
     }
-
-    var
-        myInt: Integer;
 }

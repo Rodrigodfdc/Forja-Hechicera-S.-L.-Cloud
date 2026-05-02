@@ -1,39 +1,30 @@
-page 50005 CursedWeaponAPI
+page 50005 "Cursed Weapon API"
 {
-    //PageType = API;
-    ApplicationArea = All;
-    UsageCategory = Administration;
-    SourceTable = CursedWeapon;
+    PageType = API;
+    APIGroup = 'cursedWeapons';
+    APIPublisher = 'forjaHechicera';
+    APIVersion = 'v1.0';
+    EntityName = 'cursedWeapon';
+    EntitySetName = 'cursedWeapons';
+    SourceTable = "Cursed Weapon";
+    Editable = false;
+    ODataKeyFields = "No.";
 
     layout
     {
         area(Content)
         {
-            group(GroupName)
+            repeater(Group)
             {
-                // field(Name; NameSource)
-                // {
-
-                // }
+                field(no; Rec."No.") { }
+                field(description; Rec.Description) { }
+                field(cursedGrade; Rec.CursedGrade) { }
+                field(weaponStatus; Rec.WeaponStatus) { }
+                field(threatLevel; Rec.ThreatLevel) { }
+                field(forgerName; Rec.ForgerName) { }
+                field(innateTeq; Rec.InnateTeq) { }
+                field(forgeDate; Rec.ForgeDate) { }
             }
         }
     }
-
-    actions
-    {
-        area(Processing)
-        {
-            action(ActionName)
-            {
-
-                trigger OnAction()
-                begin
-
-                end;
-            }
-        }
-    }
-
-    var
-        myInt: Integer;
 }

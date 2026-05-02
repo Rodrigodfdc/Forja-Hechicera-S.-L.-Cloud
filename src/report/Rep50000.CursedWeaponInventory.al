@@ -1,59 +1,59 @@
-report 50000 CursedWeaponInventory
-{
-    UsageCategory = ReportsAndAnalysis;
-    ApplicationArea = All;
-    DefaultRenderingLayout = LayoutName;
+// report 50000 CursedWeaponInventory
+// {
+//     UsageCategory = ReportsAndAnalysis;
+//     ApplicationArea = All;
+//     DefaultRenderingLayout = LayoutName;
 
-    // dataset
-    // {
-    //     dataitem(DataItemName; SourceTableName)
-    //     {
-    //         column(ColumnName; SourceFieldName)
-    //         {
+//     // dataset
+//     // {
+//     //     dataitem(DataItemName; SourceTableName)
+//     //     {
+//     //         column(ColumnName; SourceFieldName)
+//     //         {
 
-    //         }
-    //     }
-    // }
+//     //         }
+//     //     }
+//     // }
 
-    requestpage
-    {
-        AboutTitle = 'Teaching tip title';
-        AboutText = 'Teaching tip content';
-        layout
-        {
-            area(Content)
-            {
-                group(GroupName)
-                {
-                    // field(Name; SourceExpression)
-                    // {
+//     requestpage
+//     {
+//         AboutTitle = 'Teaching tip title';
+//         AboutText = 'Teaching tip content';
+//         layout
+//         {
+//             area(Content)
+//             {
+//                 group(GroupName)
+//                 {
+//                     // field(Name; SourceExpression)
+//                     // {
 
-                    // }
-                }
-            }
-        }
+//                     // }
+//                 }
+//             }
+//         }
 
-        actions
-        {
-            area(processing)
-            {
-                action(LayoutName)
-                {
+//         actions
+//         {
+//             area(processing)
+//             {
+//                 action(LayoutName)
+//                 {
 
-                }
-            }
-        }
-    }
+//                 }
+//             }
+//         }
+//     }
 
-    rendering
-    {
-        layout(LayoutName)
-        {
-            Type = Excel;
-            LayoutFile = 'mySpreadsheet.xlsx';
-        }
-    }
+//     rendering
+//     {
+//         layout(LayoutName)
+//         {
+//             Type = Excel;
+//             LayoutFile = 'mySpreadsheet.xlsx';
+//         }
+//     }
 
-    var
-        myInt: Integer;
-}
+//     var
+//         myInt: Integer;
+// }

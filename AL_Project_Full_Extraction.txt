@@ -1,0 +1,1446 @@
+# Extracción completa de archivos AL
+
+Este documento contiene el contenido completo de todos los archivos `.al` del proyecto, con separadores por ruta de archivo.
+
+---
+
+=== FILE: src/table/Tab50000.CursedWeapon.al ===
+
+table 50000 "Cursed Weapon"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Cursed Weapon';
+
+    fields
+    {
+        field(1; "No."; Code[20])
+        {
+            Caption = 'No.';
+            TableRelation = Item;
+        }
+        field(2; ItemNo; Code[20])
+        {
+            Caption = 'Item No.';
+            TableRelation = Item;
+        }
+        field(3; Description; Text[100])
+        {
+            Caption = 'Description';
+        }
+        field(4; CursedGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Cursed Grade';
+        }
+        field(5; WeaponStatus; Enum "Weapon Status")
+        {
+            Caption = 'Weapon Status';
+            Editable = false; // Solo via CursedWeaponMgt.ChangeWeaponStatus()
+        }
+        field(6; InnateTeq; Enum "Cursed Technique Type")
+        {
+            Caption = 'Innate Technique';
+        }
+        field(7; ForgerName; Text[50])
+        {
+            Caption = 'Forger Name';
+        }
+        field(8; BindingVows; Text[250])
+        {
+            Caption = 'Binding Vows';
+        }
+        field(9; ThreatLevel; Decimal)
+        {
+            Caption = 'Threat Level';
+            Editable = false;
+            DecimalPlaces = 2 : 2;
+        }
+        field(10; ForgeDate; Date)
+        {
+            Caption = 'Forge Date';
+        }
+        field(11; SoldToCustomerNo; Code[20])
+        {
+            Caption = 'Sold-to Customer No.';
+            TableRelation = Customer;
+            Editable = false;
+        }
+        field(12; "No. Series"; Code[20])
+        {
+            Caption = 'No. Series';
+            TableRelation = "No. Series";
+        }
+        field(13; Notes; Text[500])
+        {
+            Caption = 'Notes';
+        }
+    }
+
+    keys
+    {
+        key(PK; "No.") { Clustered = true; }
+        key(Grade; CursedGrade) { }
+        key(Status; WeaponStatus) { }
+    }
+
+
+
+    fieldgroups
+    {
+        // Add changes to field groups here
+    }
+
+    var
+        myInt: Integer;
+
+    trigger OnInsert()
+    begin
+
+    end;
+
+    trigger OnModify()
+    begin
+
+
+    end;
+
+    trigger OnDelete()
+    begin
+
+    end;
+
+    trigger OnRename()
+    begin
+
+    end;
+
+}
+
+---
+
+=== FILE: src/table/Tab50001.CursedTechnique.al ===
+
+table 50001 "Cursed Technique"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Cursed Technique';
+
+    fields
+    {
+        field(1; Code; Code[10])
+        {
+            Caption = 'Code';
+        }
+        field(2; Name; Text[50])
+        {
+            Caption = 'Name';
+        }
+        field(3; Description; Text[250])
+        {
+            Caption = 'Description';
+        }
+        field(4; EnergyMultiplier; Decimal)
+        {
+            Caption = 'Energy Multiplier';
+            DecimalPlaces = 2 : 2;
+            MinValue = 0.1;
+        }
+        field(5; MinGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Min. Grade Required';
+        }
+        field(6; IsActive; Boolean)
+        {
+            Caption = 'Is Active';
+            InitValue = true;
+        }
+    }
+
+    keys
+    {
+        key(PK; Code) { Clustered = true; }
+    }
+
+
+    fieldgroups
+    {
+        // Add changes to field groups here
+    }
+
+    var
+        myInt: Integer;
+
+    trigger OnInsert()
+    begin
+
+    end;
+
+    trigger OnModify()
+    begin
+
+    end;
+
+    trigger OnDelete()
+    begin
+
+    end;
+
+    trigger OnRename()
+    begin
+
+    end;
+
+}
+
+---
+
+=== FILE: src/table/Tab50002.WeaponLifecycleEntry.al ===
+
+table 50002 "Weapon Lifecycle Entry"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Weapon Lifecycle Entry';
+
+    fields
+    {
+        field(1; "Entry No."; Integer)
+        {
+            Caption = 'Entry No.';
+            AutoIncrement = true;
+        }
+        field(2; "Weapon No."; Code[20])
+        {
+            Caption = 'Weapon No.';
+            TableRelation = "Cursed Weapon";
+        }
+        field(3; EntryDate; DateTime)
+        {
+            Caption = 'Entry Date';
+        }
+        field(4; OldStatus; Enum "Weapon Status")
+        {
+            Caption = 'Old Status';
+        }
+        field(5; NewStatus; Enum "Weapon Status")
+        {
+            Caption = 'New Status';
+        }
+        field(6; Reason; Text[150])
+        {
+            Caption = 'Reason';
+        }
+        field(7; UserID; Code[50])
+        {
+            Caption = 'User ID';
+        }
+        field(8; ThreatLevelAtEntry; Decimal)
+        {
+            Caption = 'Threat Level At Entry';
+            DecimalPlaces = 2 : 2;
+            Editable = false;
+        }
+    }
+
+    keys
+    {
+        key(PK; "Entry No.") { Clustered = true; }
+        key(Weapon; "Weapon No.", EntryDate) { }
+    }
+
+
+    fieldgroups
+    {
+        // Add changes to field groups here
+    }
+
+    var
+        myInt: Integer;
+
+    trigger OnInsert()
+    begin
+
+    end;
+
+    trigger OnModify()
+    begin
+
+    end;
+
+    trigger OnDelete()
+    begin
+
+    end;
+
+    trigger OnRename()
+    begin
+
+    end;
+
+}
+
+---
+
+=== FILE: src/enum/Enum50000.CursedGrade.al ===
+
+enum 50000 "Cursed Grade"
+{
+    Extensible = true;
+
+    value(0; "Special")
+    {
+        Caption = 'Special Grade';
+    }
+    value(1; "SemiGrade1")
+    {
+        Caption = 'Semi-Grade 1';
+    }
+    value(2; "SemiGrade2")
+    {
+        Caption = 'Semi-Grade 2';
+    }
+    value(3; "Grade1")
+    {
+        Caption = 'Grade 1';
+    }
+    value(4; "Grade2")
+    {
+        Caption = 'Grade 2';
+    }
+    value(5; "Grade4")
+    {
+        Caption = 'Grade 4';
+    }
+}
+
+---
+
+=== FILE: src/enum/Enum50001.WeaponStatus.al ===
+
+enum 50001 "Weapon Status"
+{
+    Extensible = true;
+
+    value(0; "Dormant")
+    {
+        Caption = 'Dormant';
+    }   // Estado inicial al crear
+    value(1; "Active")
+    {
+        Caption = 'Active';
+    }    // Al completar Assembly Order
+    value(2; "Sealed")
+    {
+        Caption = 'Sealed';
+    }    // Sellada temporalmente
+    value(3; "Destroyed")
+    {
+        Caption = 'Destroyed';
+    } // Destruida
+    value(4; "Sold")
+    {
+        Caption = 'Sold';
+    }      // Al contabilizar albaran
+}
+
+---
+
+=== FILE: src/enum/Enum50002.CursedTechniqueType.al ===
+
+enum 50002 "Cursed Technique Type"
+{
+    Extensible = true;
+
+    value(0; "None")
+    {
+        Caption = 'None';
+    }           // x1.0
+    value(1; "Infinity")
+    {
+        Caption = 'Infinity';
+    }       // x3.0 - Gojo
+    value(2; "NegativeCalm")
+    {
+        Caption = 'Negative Calm';
+    }  // x2.0 - Nanami
+    value(3; "Tetragrammaton")
+    {
+        Caption = 'Tetragrammaton';
+    } // x2.5 - Maki
+    value(4; "Resonance")
+    {
+        Caption = 'Resonance';
+    }      // x1.8 - Nobara
+    value(5; "Unknown")
+    {
+        Caption = 'Unknown';
+    }        // x1.5
+}
+
+---
+
+=== FILE: src/codeunit/Cod50000.CursedWeaponMgt.al ===
+
+codeunit 50000 "Cursed Weapon Mgt"
+{
+    // ── CalculateThreatLevel ───────────────────────────────────────────
+    // Formula: ThreatLevel = GradeBase x EnergyMultiplier x BonusVotos
+    // GradeBase: Special=10, SemiGrade1=8, SemiGrade2=6, Grade1=4, Grade2=2, Grade4=1
+    // BonusVotos: si BindingVows <> '' -> resultado x 1.2 (+20%)
+    procedure CalculateThreatLevel(WeaponNo: Code[20])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        CursedTechnique: Record "Cursed Technique";
+        GradeBase: Decimal;
+        Multiplier: Decimal;
+        ThreatResult: Decimal;
+    begin
+        if not CursedWeapon.Get(WeaponNo) then exit;
+
+        // Calcular GradeBase segun el enum
+        case CursedWeapon.CursedGrade of
+            CursedWeapon.CursedGrade::Special:
+                GradeBase := 10;
+            CursedWeapon.CursedGrade::SemiGrade1:
+                GradeBase := 8;
+            CursedWeapon.CursedGrade::SemiGrade2:
+                GradeBase := 6;
+            CursedWeapon.CursedGrade::Grade1:
+                GradeBase := 4;
+            CursedWeapon.CursedGrade::Grade2:
+                GradeBase := 2;
+            CursedWeapon.CursedGrade::Grade4:
+                GradeBase := 1;
+        end;
+
+        // Obtener multiplicador de la tecnica
+        Multiplier := 1.0; // Default si no hay tecnica
+        case CursedWeapon.InnateTeq of
+            CursedWeapon.InnateTeq::Infinity:
+                Multiplier := 3.0;
+            CursedWeapon.InnateTeq::NegativeCalm:
+                Multiplier := 2.0;
+            CursedWeapon.InnateTeq::Tetragrammaton:
+                Multiplier := 2.5;
+            CursedWeapon.InnateTeq::Resonance:
+                Multiplier := 1.8;
+            CursedWeapon.InnateTeq::Unknown:
+                Multiplier := 1.5;
+        end;
+
+        // Calcular resultado base
+        ThreatResult := GradeBase * Multiplier;
+
+        // Aplicar bonus si tiene votos de vinculacion
+        if CursedWeapon.BindingVows <> '' then
+            ThreatResult := ThreatResult * 1.2;
+
+        // Actualizar el campo
+        CursedWeapon.ThreatLevel := ThreatResult;
+        CursedWeapon.Modify(true);
+    end;
+
+    // ── ValidateSaleAuthorization ──────────────────────────────────────
+    // Bloquea la venta si el cliente no tiene autorizacion para el grado
+    procedure ValidateSaleAuthorization(ItemNo: Code[20]; CustomerNo: Code[20])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        Customer: Record Customer;
+    begin
+        if not CursedWeapon.Get(ItemNo) then exit;
+        if not Customer.Get(CustomerNo) then exit;
+
+        if CursedWeapon.CursedGrade in
+           [CursedWeapon.CursedGrade::Special, CursedWeapon.CursedGrade::Grade1]
+        then
+            if not Customer.SeniorHechiceroAuthorized then
+                Error('Customer %1 is not authorized to purchase %2 grade weapons. ' +
+                      'Enable Senior Hechicero Authorization on the customer card.',
+                      CustomerNo, CursedWeapon.CursedGrade);
+    end;
+
+    // ── ChangeWeaponStatus ─────────────────────────────────────────────
+    // Cambia el estado y escribe en WeaponLifecycleEntry
+    procedure ChangeWeaponStatus(WeaponNo: Code[20]; NewStatus: Enum "Weapon Status"; Reason: Text[150])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        LifecycleEntry: Record "Weapon Lifecycle Entry";
+        LastEntry: Record "Weapon Lifecycle Entry";
+        NextEntryNo: Integer;
+    begin
+        if not CursedWeapon.Get(WeaponNo) then exit;
+
+        // Calcular el siguiente EntryNo
+        NextEntryNo := 1;
+        if LastEntry.FindLast() then
+            NextEntryNo := LastEntry."Entry No." + 1;
+
+        // Insertar entrada en el libro de historial
+        LifecycleEntry.Init();
+        LifecycleEntry."Entry No." := NextEntryNo;
+        LifecycleEntry."Weapon No." := WeaponNo;
+        LifecycleEntry.EntryDate := CurrentDateTime();
+        LifecycleEntry.OldStatus := CursedWeapon.WeaponStatus;
+        LifecycleEntry.NewStatus := NewStatus;
+        LifecycleEntry.Reason := Reason;
+        LifecycleEntry.UserID := CopyStr(UserId(), 1, 50);
+        LifecycleEntry.ThreatLevelAtEntry := CursedWeapon.ThreatLevel;
+        LifecycleEntry.Insert(true);
+
+        // Cambiar el estado en la tabla CursedWeapon
+        CursedWeapon.WeaponStatus := NewStatus;
+        CursedWeapon.Modify(true);
+    end;
+
+    // ── CreateCursedWeaponFromItem ─────────────────────────────────────
+    // Crea el registro inicial en CursedWeapon desde un Item
+    procedure CreateCursedWeaponFromItem(ItemNo: Code[20])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        Item: Record Item;
+    begin
+        // Evitar duplicados
+        if CursedWeapon.Get(ItemNo) then exit;
+        if not Item.Get(ItemNo) then exit;
+
+        CursedWeapon.Init();
+        CursedWeapon."No." := ItemNo;
+        CursedWeapon.ItemNo := ItemNo;
+        CursedWeapon.Description := Item.Description;
+        CursedWeapon.WeaponStatus := CursedWeapon.WeaponStatus::Dormant;
+        CursedWeapon.Insert(true);
+
+        // Calcular ThreatLevel inicial
+        CalculateThreatLevel(ItemNo);
+    end;
+
+    // ── GetWeaponSummary ───────────────────────────────────────────────
+    // Devuelve texto resumen para notificaciones y mensajes
+    procedure GetWeaponSummary(WeaponNo: Code[20]): Text
+    var
+        CursedWeapon: Record "Cursed Weapon";
+    begin
+        if not CursedWeapon.Get(WeaponNo) then
+            exit(WeaponNo);
+
+        exit(StrSubstNo('[%1] %2 — Grade: %3 — Threat: %4',
+            CursedWeapon."No.",
+            CursedWeapon.Description,
+            CursedWeapon.CursedGrade,
+            CursedWeapon.ThreatLevel));
+    end;
+}
+
+---
+
+=== FILE: src/codeunit/Cod50001.CursedWeaponEvents.al ===
+
+codeunit 50001 "Cursed Weapon Events"
+{
+    // ── Suscriptor 1b ─────────────────────────────────────────────────
+    // Cuando se modifica un articulo existente y se activa IsCursedWeapon,
+    // crea el registro en CursedWeapon si no existia ya.
+    [EventSubscriber(ObjectType::Table, Database::Item, 'OnAfterModifyEvent', '', false, false)]
+    local procedure OnAfterModifyItem(var Rec: Record Item; var xRec: Record Item; RunTrigger: Boolean)
+    var
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        if Rec.IsCursedWeapon and not xRec.IsCursedWeapon then
+            Mgt.CreateCursedWeaponFromItem(Rec."No.");
+    end;
+
+    // ── Suscriptor 2 ──────────────────────────────────────────────────
+    // Antes de liberar un pedido de venta, valida que el cliente
+    // tiene autorizacion para el grado de cada arma maldita en las lineas.
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnBeforeReleaseSalesDoc', '', false, false)]
+    local procedure OnBeforeReleaseSalesDoc(var SalesHeader: Record "Sales Header")
+    var
+        SalesLine: Record "Sales Line";
+        CursedWeapon: Record "Cursed Weapon";
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange(Type, SalesLine.Type::Item);
+        if SalesLine.FindSet() then
+            repeat
+                if CursedWeapon.Get(SalesLine."No.") then
+                    Mgt.ValidateSaleAuthorization(
+                        SalesLine."No.",
+                        SalesHeader."Sell-to Customer No.");
+            until SalesLine.Next() = 0;
+    end;
+
+    // ── Suscriptor 3 ──────────────────────────────────────────────────
+    // Al completar un ensamblado, cambia el estado del arma
+    // de Dormant a Active y recalcula el ThreatLevel.
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Assembly-Post", 'OnAfterPost', '', false, false)]
+    local procedure OnAfterPostAssemblyOrder(var AssemblyHeader: Record "Assembly Header")
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        if CursedWeapon.Get(AssemblyHeader."Item No.") then begin
+            Mgt.ChangeWeaponStatus(
+                AssemblyHeader."Item No.",
+                CursedWeapon.WeaponStatus::Active,
+                'Assembly Order completed');
+            Mgt.CalculateThreatLevel(AssemblyHeader."Item No.");
+
+            // Rellenar la fecha de forja
+            if CursedWeapon.Get(AssemblyHeader."Item No.") then begin
+                CursedWeapon.ForgeDate := Today;
+                CursedWeapon.Modify(true);
+            end;
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
+    local procedure OnAfterPostSalesShipLine(
+        var SalesHeader: Record "Sales Header";
+        SalesInvHdrNo: Code[20];
+        RetRcpHdrNo: Code[20];
+        SalesCrMemoHdrNo: Code[20])
+    var
+        SalesLine: Record "Sales Line";
+        CursedWeapon: Record "Cursed Weapon";
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange(Type, SalesLine.Type::Item);
+        if SalesLine.FindSet() then
+            repeat
+                if CursedWeapon.Get(SalesLine."No.") then begin
+                    Mgt.ChangeWeaponStatus(
+                        SalesLine."No.",
+                        CursedWeapon.WeaponStatus::Sold,
+                        StrSubstNo('Sold via Sales Order %1', SalesLine."Document No."));
+                    CursedWeapon.Get(SalesLine."No.");
+                    CursedWeapon.SoldToCustomerNo := SalesHeader."Sell-to Customer No.";
+                    CursedWeapon.Modify(true);
+                end;
+            until SalesLine.Next() = 0;
+    end;
+}
+
+---
+
+=== FILE: src/page/Pag50000.CursedWeaponList.al ===
+
+page 50000 "Cursed Weapon List"
+{
+    PageType = List;
+    SourceTable = "Cursed Weapon";
+    Caption = 'Cursed Weapons';
+    CardPageId = "Cursed Weapon Card";
+    Editable = false;
+    UsageCategory = Lists;
+    ApplicationArea = All;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(WeaponList)
+            {
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    ApplicationArea = All;
+                }
+                field(WeaponStatus; Rec.WeaponStatus)
+                {
+                    ApplicationArea = All;
+                    StyleExpr = StatusStyle;
+                }
+                field(ThreatLevel; Rec.ThreatLevel)
+                {
+                    ApplicationArea = All;
+                }
+                field(ForgerName; Rec.ForgerName)
+                {
+                    ApplicationArea = All;
+                }
+                field(InnateTeq; Rec.InnateTeq)
+                {
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(CalculateAll)
+            {
+                Caption = 'Recalculate All Threat Levels';
+                ApplicationArea = All;
+                Image = Calculate;
+                trigger OnAction()
+                var
+                    CursedWeapon: Record "Cursed Weapon";
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                begin
+                    if CursedWeapon.FindSet() then
+                        repeat
+                            Mgt.CalculateThreatLevel(CursedWeapon."No.");
+                        until CursedWeapon.Next() = 0;
+                    CurrPage.Update(false);
+                end;
+            }
+        }
+    }
+
+    var
+        StatusStyle: Text;
+
+    trigger OnAfterGetRecord()
+    begin
+        case Rec.WeaponStatus of
+            Rec.WeaponStatus::Active:
+                StatusStyle := 'Favorable';
+            Rec.WeaponStatus::Sold:
+                StatusStyle := 'Strong';
+            Rec.WeaponStatus::Sealed:
+                StatusStyle := 'Attention';
+            Rec.WeaponStatus::Destroyed:
+                StatusStyle := 'Unfavorable';
+            else
+                StatusStyle := 'StandardAccent';
+        end;
+    end;
+}
+
+---
+
+=== FILE: src/page/Pag50001.CursedWeaponCard.al ===
+
+page 50001 "Cursed Weapon Card"
+{
+    PageType = Card;
+    SourceTable = "Cursed Weapon";
+    Caption = 'Cursed Weapon Card';
+    UsageCategory = None;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                Caption = 'General';
+                field("No."; Rec."No.")
+                {
+                    ApplicationArea = All;
+                    ToolTip = 'Weapon identifier.';
+                }
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    ApplicationArea = All;
+                }
+                field(WeaponStatus; Rec.WeaponStatus)
+                {
+                    ApplicationArea = All;
+                    StyleExpr = StatusStyle;
+                }
+                field(InnateTeq; Rec.InnateTeq)
+                {
+                    ApplicationArea = All;
+                }
+                field(ThreatLevel; Rec.ThreatLevel)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+            }
+            group(ForgeDetails)
+            {
+                Caption = 'Forge Details';
+                field(ForgerName; Rec.ForgerName)
+                {
+                    ApplicationArea = All;
+                }
+                field(ForgeDate; Rec.ForgeDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(BindingVows; Rec.BindingVows)
+                {
+                    ApplicationArea = All;
+                    MultiLine = true;
+                }
+            }
+            group(SaleInfo)
+            {
+                Caption = 'Sale Information';
+                field(SoldToCustomerNo; Rec.SoldToCustomerNo)
+                {
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+            }
+            group(Notes)
+            {
+                Caption = 'Notes';
+                field(NotesField; Rec.Notes)
+                {
+                    ApplicationArea = All;
+                    ShowCaption = false;
+                    MultiLine = true;
+                }
+            }
+        }
+        area(FactBoxes)
+        {
+            part(LifecyclePart; "Weapon Lifecycle List Part")
+            {
+                ApplicationArea = All;
+                Caption = 'Lifecycle History';
+                SubPageLink = "Weapon No." = field("No.");
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(CalculateThreat)
+            {
+                Caption = 'Calculate Threat Level';
+                ApplicationArea = All;
+                Image = Calculate;
+                trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                begin
+                    Mgt.CalculateThreatLevel(Rec."No.");
+                    Rec.Get(Rec."No.");
+                    CurrPage.Update(false);
+                end;
+            }
+            action(ChangeStatus)
+            {
+                Caption = 'Change Status';
+                ApplicationArea = All;
+                Image = ChangeStatus;
+                trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                    NewStatus: Enum "Weapon Status";
+                    Reason: Text[150];
+                begin
+                    // Aqui puedes abrir un dialogo o pedir al usuario el nuevo estado
+                    // Simplificado: cambia a Active como ejemplo
+                    Reason := 'Manual status change';
+                    Mgt.ChangeWeaponStatus(Rec."No.", NewStatus, Reason);
+                    Rec.Get(Rec."No.");
+                    CurrPage.Update(false);
+                end;
+            }
+        }
+    }
+
+    var
+        StatusStyle: Text;
+
+    trigger OnAfterGetRecord()
+    begin
+        case Rec.WeaponStatus of
+            Rec.WeaponStatus::Active:
+                StatusStyle := 'Favorable';
+            Rec.WeaponStatus::Sold:
+                StatusStyle := 'Strong';
+            Rec.WeaponStatus::Sealed:
+                StatusStyle := 'Attention';
+            Rec.WeaponStatus::Destroyed:
+                StatusStyle := 'Unfavorable';
+            else
+                StatusStyle := 'StandardAccent';
+        end;
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
+    begin
+        if Rec."No." = '' then
+            NoSeriesMgt.InitSeries('CW', '', Today, Rec."No.", Rec."No. Series");
+        Rec.WeaponStatus := Rec.WeaponStatus::Dormant;
+    end;
+}
+
+---
+
+=== FILE: src/page/Pag50002.WeaponLifecycleList.al ===
+
+page 50002 "Weapon Lifecycle List"
+{
+    PageType = List;
+    SourceTable = "Weapon Lifecycle Entry";
+    Caption = 'Weapon Lifecycle History';
+    Editable = false;
+    InsertAllowed = false;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
+    UsageCategory = Lists;
+    ApplicationArea = All;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(LifecycleEntries)
+            {
+                field("Entry No."; Rec."Entry No.")
+                {
+                    ApplicationArea = All;
+                }
+                field("Weapon No."; Rec."Weapon No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(EntryDate; Rec.EntryDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(OldStatus; Rec.OldStatus)
+                {
+                    ApplicationArea = All;
+                }
+                field(NewStatus; Rec.NewStatus)
+                {
+                    ApplicationArea = All;
+                }
+                field(Reason; Rec.Reason)
+                {
+                    ApplicationArea = All;
+                }
+                field(UserID; Rec.UserID)
+                {
+                    ApplicationArea = All;
+                }
+                field(ThreatLevelAtEntry; Rec.ThreatLevelAtEntry)
+                {
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/page/Pag50003.CursedTechniquesList.al ===
+
+page 50003 "Cursed Techniques List"
+{
+    PageType = List;
+    SourceTable = "Cursed Technique";
+    Caption = 'Cursed Techniques';
+    CardPageId = "Cursed Techniques Card";
+    UsageCategory = Lists;
+    ApplicationArea = All;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(TechniqueList)
+            {
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
+                field(EnergyMultiplier; Rec.EnergyMultiplier)
+                {
+                    ApplicationArea = All;
+                }
+                field(MinGrade; Rec.MinGrade)
+                {
+                    ApplicationArea = All;
+                }
+                field(IsActive; Rec.IsActive)
+                {
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/page/Pag50004.CursedTechniquesCard.al ===
+
+page 50004 "Cursed Techniques Card"
+{
+    PageType = Card;
+    SourceTable = "Cursed Technique";
+    Caption = 'Cursed Technique Card';
+    UsageCategory = None;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                Caption = 'General';
+                field(Code; Rec.Code)
+                {
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    ApplicationArea = All;
+                }
+                field(EnergyMultiplier; Rec.EnergyMultiplier)
+                {
+                    ApplicationArea = All;
+                }
+                field(MinGrade; Rec.MinGrade)
+                {
+                    ApplicationArea = All;
+                }
+                field(IsActive; Rec.IsActive)
+                {
+                    ApplicationArea = All;
+                }
+            }
+            group(DescGroup)
+            {
+                Caption = 'Description';
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                    ShowCaption = false;
+                    MultiLine = true;
+                }
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/page/Pag50005.CursedWeaponAPI.al ===
+
+page 50005 "Cursed Weapon API"
+{
+    PageType = API;
+    APIGroup = 'cursedWeapons';
+    APIPublisher = 'forjaHechicera';
+    APIVersion = 'v1.0';
+    EntityName = 'cursedWeapon';
+    EntitySetName = 'cursedWeapons';
+    SourceTable = "Cursed Weapon";
+    Editable = false;
+    ODataKeyFields = "No.";
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Group)
+            {
+                field(no; Rec."No.") { }
+                field(description; Rec.Description) { }
+                field(cursedGrade; Rec.CursedGrade) { }
+                field(weaponStatus; Rec.WeaponStatus) { }
+                field(threatLevel; Rec.ThreatLevel) { }
+                field(forgerName; Rec.ForgerName) { }
+                field(innateTeq; Rec.InnateTeq) { }
+                field(forgeDate; Rec.ForgeDate) { }
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/page/Pag50006.WeaponLifecycleListPart.al ===
+
+page 50006 "Weapon Lifecycle List Part"
+{
+    PageType = ListPart;
+    SourceTable = "Weapon Lifecycle Entry";
+    Caption = 'Lifecycle History';
+    Editable = false;
+    InsertAllowed = false;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Entries)
+            {
+                field(EntryDate; Rec.EntryDate)
+                {
+                    ApplicationArea = All;
+                }
+                field(OldStatus; Rec.OldStatus)
+                {
+                    ApplicationArea = All;
+                }
+                field(NewStatus; Rec.NewStatus)
+                {
+                    ApplicationArea = All;
+                }
+                field(Reason; Rec.Reason)
+                {
+                    ApplicationArea = All;
+                }
+                field(UserID; Rec.UserID)
+                {
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/pageextension/Pag-Ext50000.ItemCardExt.al ===
+
+pageextension 50000 "Item Card Ext" extends "Item Card"
+{
+    layout
+    {
+        addlast(Item)
+        {
+            group(CursedDataGroup)
+            {
+                Caption = 'Cursed Data';
+
+                field(IsCursedWeapon; Rec.IsCursedWeapon)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Is Cursed Weapon';
+
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Cursed Grade';
+                }
+                field(QuickThreatLevel; Rec.QuickThreatLevel)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Threat Level';
+                    Editable = false;
+                }
+            }
+        }
+    }
+
+    actions
+    {
+        addlast(processing)
+        {
+            action(ViewCursedWeapon)
+            {
+                Caption = 'View Cursed Weapon';
+                ApplicationArea = All;
+                Image = Item;
+                Visible = Rec.IsCursedWeapon;
+                trigger OnAction()
+                var
+                    CursedWeapon: Record "Cursed Weapon";
+                    CursedWeaponCard: Page "Cursed Weapon Card";
+                begin
+                    if CursedWeapon.Get(Rec."No.") then begin
+                        CursedWeaponCard.SetRecord(CursedWeapon);
+                        CursedWeaponCard.Run();
+                    end;
+                end;
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/pageextension/Pag-Ext50001.ItemListExt.al ===
+
+pageextension 50001 "Item List Ext" extends "Item List"
+{
+    layout
+    {
+        addafter(Description)
+        {
+            field(IsCursedWeapon; Rec.IsCursedWeapon)
+            {
+                ApplicationArea = All;
+                Caption = 'Cursed';
+                Width = 5;
+            }
+            field(CursedGrade; Rec.CursedGrade)
+            {
+                ApplicationArea = All;
+                Caption = 'Grade';
+            }
+        }
+    }
+
+    views
+    {
+        addfirst
+        {
+            view(CursedWeaponsFilter)
+            {
+                Caption = 'Cursed Weapons';
+                Filters = where(IsCursedWeapon = const(true));
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/pageextension/Pag-Ext50002.SalesOrderExt.al ===
+
+pageextension 50002 "Sales Order Ext" extends "Sales Order"
+{
+    layout
+    {
+        addlast(FactBoxes)
+        {
+            part(CursedWeaponInfo; "Weapon Lifecycle List Part")
+            {
+                ApplicationArea = All;
+                Caption = 'Cursed Weapon Info';
+                SubPageLink = "Weapon No." = field("No.");
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/pageextension/Pag-Ext50003.CustomerCardExt.al ===
+
+pageextension 50003 "Customer Card Ext" extends "Customer Card"
+{
+    layout
+    {
+        addlast(General)
+        {
+            group(CursedAuthorization)
+            {
+                Caption = 'Cursed Authorization';
+
+                field(SeniorHechiceroAuthorized; Rec.SeniorHechiceroAuthorized)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Senior Hechicero Authorized';
+                    ToolTip = 'If true, customer can buy Grade 1 and Special weapons.';
+                }
+                field(MaxCursedGrade; Rec.MaxCursedGrade)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Max Cursed Grade';
+                }
+            }
+        }
+    }
+}
+
+---
+
+=== FILE: src/tableextension/Tab-Ext50000.ItemTableExt.al ===
+
+tableextension 50000 "Item Table Ext" extends Item
+{
+    fields
+    {
+        field(50100; IsCursedWeapon; Boolean)
+        {
+            Caption = 'Is Cursed Weapon';
+            DataClassification = CustomerContent;
+
+
+        }
+        field(50101; CursedGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Cursed Grade';
+            DataClassification = CustomerContent;
+        }
+        field(50102; QuickThreatLevel; Decimal)
+        {
+            Caption = 'Threat Level';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Cursed Weapon".ThreatLevel
+                where(ItemNo = field("No.")));
+            Editable = false;
+        }
+    }
+}
+
+---
+
+=== FILE: src/tableextension/Tab-Ext50001.CustomerTableExt.al ===
+
+tableextension 50001 "Customer Table Ext" extends Customer
+{
+    fields
+    {
+        field(50100; SeniorHechiceroAuthorized; Boolean)
+        {
+            Caption = 'Senior Hechicero Authorized';
+            DataClassification = CustomerContent;
+        }
+        field(50101; MaxCursedGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Max Cursed Grade';
+            DataClassification = CustomerContent;
+        }
+    }
+}
+
+---
+
+=== FILE: src/report/Rep50000.CursedWeaponInventory.al ===
+
+// report 50000 CursedWeaponInventory
+// {
+//     UsageCategory = ReportsAndAnalysis;
+//     ApplicationArea = All;
+//     DefaultRenderingLayout = LayoutName;
+
+//     // dataset
+//     // {
+//     //     dataitem(DataItemName; SourceTableName)
+//     //     {
+//     //         column(ColumnName; SourceFieldName)
+//     //         {
+
+//     //         }
+//     //     }
+//     // }
+
+//     requestpage
+//     {
+//         AboutTitle = 'Teaching tip title';
+//         AboutText = 'Teaching tip content';
+//         layout
+//         {
+//             area(Content)
+//             {
+//                 group(GroupName)
+//                 {
+//                     // field(Name; SourceExpression)
+//                     // {
+
+//                     // }
+//                 }
+//             }
+//         }
+
+//         actions
+//         {
+//             area(processing)
+//             {
+//                 action(LayoutName)
+//                 {
+
+//                 }
+//             }
+//         }
+//     }
+
+//     rendering
+//     {
+//         layout(LayoutName)
+//         {
+//             Type = Excel;
+//             LayoutFile = 'mySpreadsheet.xlsx';
+//         }
+//     }
+
+//     var
+//         myInt: Integer;
+// }
+
+---
+
+=== FILE: src/report/Rep50001.ThreatAssessmentSummary.al ===
+
+report 50001 ThreatAssessmentSummary
+{
+    UsageCategory = ReportsAndAnalysis;
+    ApplicationArea = All;
+    // DefaultRenderingLayout = LayoutName;
+
+    dataset
+    {
+        // dataitem(DataItemName; SourceTableName)
+        // {
+        //     column(ColumnName; SourceFieldName)
+        //     {
+
+        //     }
+        // }
+    }
+
+    requestpage
+    {
+        AboutTitle = 'Teaching tip title';
+        AboutText = 'Teaching tip content';
+        layout
+        {
+            area(Content)
+            {
+                group(GroupName)
+                {
+                    // field(Name; SourceExpression)
+                    // {
+
+                    // }
+                }
+            }
+        }
+
+        actions
+        {
+            area(processing)
+            {
+                action(LayoutName)
+                {
+
+                }
+            }
+        }
+    }
+
+    // rendering
+    // {
+    //     layout(LayoutName)
+    //     {
+    //         Type = Excel;
+    //         LayoutFile = 'mySpreadsheet.xlsx';
+    //     }
+    // }
+
+    var
+        myInt: Integer;
+}

@@ -16,14 +16,38 @@ page 50005 "Cursed Weapon API"
         {
             repeater(Group)
             {
-                field(no; Rec."No.") { }
-                field(description; Rec.Description) { }
-                field(cursedGrade; Rec.CursedGrade) { }
-                field(weaponStatus; Rec.WeaponStatus) { }
-                field(threatLevel; Rec.ThreatLevel) { }
-                field(forgerName; Rec.ForgerName) { }
-                field(innateTeq; Rec.InnateTeq) { }
-                field(forgeDate; Rec.ForgeDate) { }
+                field(no; Rec."No.")
+                {
+                    ApplicationArea = All;
+                }
+                field(description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                }
+                field(cursedGrade; Rec.CursedGrade)
+                {
+                    ApplicationArea = All;
+                }
+                field(weaponStatus; Rec.WeaponStatus)
+                {
+                    ApplicationArea = All;
+                }
+                field(threatLevel; Rec.ThreatLevel)
+                {
+                    ApplicationArea = All;
+                }
+                field(forgerName; Rec.ForgerName)
+                {
+                    ApplicationArea = All;
+                }
+                field(innateTeq; Rec.InnateTeq)
+                {
+                    ApplicationArea = All;
+                }
+                field(forgeDate; Rec.ForgeDate)
+                {
+                    ApplicationArea = All;
+                }
             }
         }
     }

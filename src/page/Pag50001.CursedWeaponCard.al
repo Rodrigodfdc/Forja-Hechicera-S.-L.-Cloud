@@ -2,7 +2,7 @@ page 50001 "Cursed Weapon Card"
 {
     PageType = Card;
     SourceTable = "Cursed Weapon";
-    Caption = 'Cursed Weapon Card';
+    Caption = 'Arma maldita';
     UsageCategory = None;
 
     layout
@@ -14,28 +14,34 @@ page 50001 "Cursed Weapon Card"
                 Caption = 'General';
                 field("No."; Rec."No.")
                 {
+                    caption = 'Número';
                     ApplicationArea = All;
                     ToolTip = 'Weapon identifier.';
                 }
                 field(Description; Rec.Description)
                 {
+                    caption = 'Descripción';
                     ApplicationArea = All;
                 }
                 field(CursedGrade; Rec.CursedGrade)
                 {
+                    caption = 'Grado maldito';
                     ApplicationArea = All;
                 }
                 field(WeaponStatus; Rec.WeaponStatus)
                 {
+                    caption = 'Estado del arma';
                     ApplicationArea = All;
                     StyleExpr = StatusStyle;
                 }
                 field(InnateTeq; Rec.InnateTeq)
                 {
+                    caption = 'Técnica innata';
                     ApplicationArea = All;
                 }
                 field(ThreatLevel; Rec.ThreatLevel)
                 {
+                    caption = 'Nivel de amenaza';
                     ApplicationArea = All;
                     Editable = false;
                 }
@@ -45,14 +51,17 @@ page 50001 "Cursed Weapon Card"
                 Caption = 'Forge Details';
                 field(ForgerName; Rec.ForgerName)
                 {
+                    caption = 'Nombre del forjador';
                     ApplicationArea = All;
                 }
                 field(ForgeDate; Rec.ForgeDate)
                 {
+                    caption = 'Fecha de forja';
                     ApplicationArea = All;
                 }
                 field(BindingVows; Rec.BindingVows)
                 {
+                    caption = 'votos vinculantes';
                     ApplicationArea = All;
                     MultiLine = true;
                 }
@@ -62,6 +71,7 @@ page 50001 "Cursed Weapon Card"
                 Caption = 'Sale Information';
                 field(SoldToCustomerNo; Rec.SoldToCustomerNo)
                 {
+                    caption = 'Vendida al cliente';
                     ApplicationArea = All;
                     Editable = false;
                 }
@@ -71,6 +81,7 @@ page 50001 "Cursed Weapon Card"
                 Caption = 'Notes';
                 field(NotesField; Rec.Notes)
                 {
+                    caption = 'Notas';
                     ApplicationArea = All;
                     ShowCaption = false;
                     MultiLine = true;
@@ -82,7 +93,7 @@ page 50001 "Cursed Weapon Card"
             part(LifecyclePart; "Weapon Lifecycle List Part")
             {
                 ApplicationArea = All;
-                Caption = 'Lifecycle History';
+                Caption = 'ciclo de vida del arma ';
                 SubPageLink = "Weapon No." = field("No.");
             }
         }
@@ -94,7 +105,7 @@ page 50001 "Cursed Weapon Card"
         {
             action(CalculateThreat)
             {
-                Caption = 'Calculate Threat Level';
+                Caption = 'Calcular nivel de amenaza';
                 ApplicationArea = All;
                 Image = Calculate;
                 trigger OnAction()
@@ -108,7 +119,7 @@ page 50001 "Cursed Weapon Card"
             }
             action(ChangeStatus)
             {
-                Caption = 'Change Status';
+                Caption = 'Cambiar estado';
                 ApplicationArea = All;
                 Image = ChangeStatus;
                 trigger OnAction()

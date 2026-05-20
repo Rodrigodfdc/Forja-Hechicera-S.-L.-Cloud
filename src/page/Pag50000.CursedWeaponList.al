@@ -2,7 +2,7 @@ page 50000 "Cursed Weapon List"
 {
     PageType = List;
     SourceTable = "Cursed Weapon";
-    Caption = 'Cursed Weapons';
+    Caption = 'Armas malditas';
     CardPageId = "Cursed Weapon Card";
     Editable = false;
     UsageCategory = Lists;
@@ -16,31 +16,38 @@ page 50000 "Cursed Weapon List"
             {
                 field("No."; Rec."No.")
                 {
+                    Caption = 'Número';
                     ApplicationArea = All;
                 }
                 field(Description; Rec.Description)
                 {
+                    Caption = 'Descripción';
                     ApplicationArea = All;
                 }
                 field(CursedGrade; Rec.CursedGrade)
                 {
+                    Caption = 'Grado maldito';
                     ApplicationArea = All;
                 }
                 field(WeaponStatus; Rec.WeaponStatus)
                 {
+                    Caption = 'Estado del arma';
                     ApplicationArea = All;
                     StyleExpr = StatusStyle;
                 }
                 field(ThreatLevel; Rec.ThreatLevel)
                 {
+                    Caption = 'Nivel de amenaza';
                     ApplicationArea = All;
                 }
                 field(ForgerName; Rec.ForgerName)
                 {
+                    Caption = 'Nombre del forjador';
                     ApplicationArea = All;
                 }
                 field(InnateTeq; Rec.InnateTeq)
                 {
+                    Caption = 'Técnica innata';
                     ApplicationArea = All;
                 }
             }

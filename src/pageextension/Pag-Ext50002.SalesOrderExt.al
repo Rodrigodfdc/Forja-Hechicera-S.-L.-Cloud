@@ -7,7 +7,7 @@ pageextension 50002 "Sales Order Ext" extends "Sales Order"
             part(CursedWeaponInfo; "Weapon Lifecycle List Part")
             {
                 ApplicationArea = All;
-                Caption = 'Cursed Weapon Info';
+                Caption = 'Información de arma maldita';
                 SubPageLink = "Weapon No." = field("No.");
             }
         }

@@ -7,13 +7,13 @@ pageextension 50001 "Item List Ext" extends "Item List"
             field(IsCursedWeapon; Rec.IsCursedWeapon)
             {
                 ApplicationArea = All;
-                Caption = 'Cursed';
+                Caption = '¿Es un arma maldita?';
                 Width = 5;
             }
             field(CursedGrade; Rec.CursedGrade)
             {
                 ApplicationArea = All;
-                Caption = 'Grade';
+                Caption = 'Grado maldito';
             }
         }
     }
@@ -24,7 +24,7 @@ pageextension 50001 "Item List Ext" extends "Item List"
         {
             view(CursedWeaponsFilter)
             {
-                Caption = 'Cursed Weapons';
+                Caption = 'Armas malditas';
                 Filters = where(IsCursedWeapon = const(true));
             }
         }

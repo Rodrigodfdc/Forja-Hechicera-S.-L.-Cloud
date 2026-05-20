@@ -6,23 +6,23 @@ pageextension 50000 "Item Card Ext" extends "Item Card"
         {
             group(CursedDataGroup)
             {
-                Caption = 'Cursed Data';
+                Caption = 'Datos del arma maldita';
 
                 field(IsCursedWeapon; Rec.IsCursedWeapon)
                 {
+                    Caption = '¿Es un arma maldita?';
                     ApplicationArea = All;
-                    Caption = 'Is Cursed Weapon';
-
                 }
                 field(CursedGrade; Rec.CursedGrade)
                 {
+                    Caption = 'Grado maldito';
                     ApplicationArea = All;
-                    Caption = 'Cursed Grade';
+
                 }
                 field(QuickThreatLevel; Rec.QuickThreatLevel)
                 {
+                    Caption = 'Nivel de amenaza';
                     ApplicationArea = All;
-                    Caption = 'Threat Level';
                     Editable = false;
                 }
             }

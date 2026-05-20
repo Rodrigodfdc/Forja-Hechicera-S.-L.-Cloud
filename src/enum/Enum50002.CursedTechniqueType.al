@@ -1,5 +1,6 @@
 enum 50002 "Cursed Technique Type"
 {
+    Caption = 'Tipo de técnica maldita';
     Extensible = true;
 
     value(0; "None")

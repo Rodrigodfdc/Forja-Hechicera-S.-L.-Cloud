@@ -6,18 +6,19 @@ pageextension 50003 "Customer Card Ext" extends "Customer Card"
         {
             group(CursedAuthorization)
             {
-                Caption = 'Cursed Authorization';
+                Caption = 'Autorización de armas malditas';
 
                 field(SeniorHechiceroAuthorized; Rec.SeniorHechiceroAuthorized)
                 {
                     ApplicationArea = All;
-                    Caption = 'Senior Hechicero Authorized';
-                    ToolTip = 'If true, customer can buy Grade 1 and Special weapons.';
+                    Caption = '¿Autorizado como Hechicero Senior?';
+                    ToolTip = 'De ser cierto, el cliente podrá comprar armas de Grado 1 y especiales.';
                 }
                 field(MaxCursedGrade; Rec.MaxCursedGrade)
                 {
                     ApplicationArea = All;
-                    Caption = 'Max Cursed Grade';
+                    Caption = 'Grado máximo maldito';
+                    ToolTip = 'El grado máximo de arma maldita que el cliente puede comprar.';
                 }
             }
         }

@@ -4,19 +4,19 @@ tableextension 50000 "Item Table Ext" extends Item
     {
         field(50100; IsCursedWeapon; Boolean)
         {
-            Caption = 'Is Cursed Weapon';
+            Caption = '¿Es un arma maldita?';
             DataClassification = CustomerContent;
 
 
         }
         field(50101; CursedGrade; Enum "Cursed Grade")
         {
-            Caption = 'Cursed Grade';
+            Caption = 'Grado maldito';
             DataClassification = CustomerContent;
         }
         field(50102; QuickThreatLevel; Decimal)
         {
-            Caption = 'Threat Level';
+            Caption = 'Nivel de amenaza';
             FieldClass = FlowField;
             CalcFormula = lookup("Cursed Weapon".ThreatLevel
                 where(ItemNo = field("No.")));

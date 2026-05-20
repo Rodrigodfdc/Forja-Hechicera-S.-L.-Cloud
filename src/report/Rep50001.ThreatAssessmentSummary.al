@@ -1,5 +1,6 @@
 report 50001 ThreatAssessmentSummary
 {
+    caption = 'Resumen de evaluación de amenazas';
     UsageCategory = ReportsAndAnalysis;
     ApplicationArea = All;
     // DefaultRenderingLayout = LayoutName;

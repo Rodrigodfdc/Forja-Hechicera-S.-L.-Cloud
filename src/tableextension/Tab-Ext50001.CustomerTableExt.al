@@ -4,7 +4,7 @@ tableextension 50001 "Customer Table Ext" extends Customer
     {
         field(50100; SeniorHechiceroAuthorized; Boolean)
         {
-            Caption = 'Senior Hechicero Authorized';
+            Caption = 'Hechicero Senior Autorizada';
             DataClassification = CustomerContent;
         }
         field(50101; MaxCursedGrade; Enum "Cursed Grade")

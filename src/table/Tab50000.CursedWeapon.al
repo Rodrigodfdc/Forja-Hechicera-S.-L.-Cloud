@@ -1,7 +1,7 @@
 table 50000 "Cursed Weapon"
 {
     DataClassification = CustomerContent;
-    Caption = 'Cursed Weapon';
+    Caption = 'Arma maldita';
 
     fields
     {
@@ -17,42 +17,42 @@ table 50000 "Cursed Weapon"
         }
         field(3; Description; Text[100])
         {
-            Caption = 'Description';
+            Caption = 'Descripción';
         }
         field(4; CursedGrade; Enum "Cursed Grade")
         {
-            Caption = 'Cursed Grade';
+            Caption = 'Grado maldito';
         }
         field(5; WeaponStatus; Enum "Weapon Status")
         {
-            Caption = 'Weapon Status';
+            Caption = 'Estado del arma';
             Editable = false; // Solo via CursedWeaponMgt.ChangeWeaponStatus()
         }
         field(6; InnateTeq; Enum "Cursed Technique Type")
         {
-            Caption = 'Innate Technique';
+            Caption = 'Técnica innata';
         }
         field(7; ForgerName; Text[50])
         {
-            Caption = 'Forger Name';
+            Caption = 'Nombre del forjador';
         }
         field(8; BindingVows; Text[250])
         {
-            Caption = 'Binding Vows';
+            Caption = 'votos vinculantes';
         }
         field(9; ThreatLevel; Decimal)
         {
-            Caption = 'Threat Level';
+            Caption = 'Nivel de amenaza';
             Editable = false;
             DecimalPlaces = 2 : 2;
         }
         field(10; ForgeDate; Date)
         {
-            Caption = 'Forge Date';
+            Caption = 'Fecha de forja';
         }
         field(11; SoldToCustomerNo; Code[20])
         {
-            Caption = 'Sold-to Customer No.';
+            Caption = 'Número de cliente al que se vendió';
             TableRelation = Customer;
             Editable = false;
         }

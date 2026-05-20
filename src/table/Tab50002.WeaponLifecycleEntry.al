@@ -1,43 +1,43 @@
 table 50002 "Weapon Lifecycle Entry"
 {
     DataClassification = CustomerContent;
-    Caption = 'Weapon Lifecycle Entry';
+    Caption = 'Ciclo de vida del arma';
 
     fields
     {
         field(1; "Entry No."; Integer)
         {
-            Caption = 'Entry No.';
+            Caption = 'Número de entrada';
             AutoIncrement = true;
         }
         field(2; "Weapon No."; Code[20])
         {
-            Caption = 'Weapon No.';
+            Caption = 'Número del arma';
             TableRelation = "Cursed Weapon";
         }
         field(3; EntryDate; DateTime)
         {
-            Caption = 'Entry Date';
+            Caption = 'Fecha de entrada';
         }
         field(4; OldStatus; Enum "Weapon Status")
         {
-            Caption = 'Old Status';
+            Caption = 'Antiguo status';
         }
         field(5; NewStatus; Enum "Weapon Status")
         {
-            Caption = 'New Status';
+            Caption = 'Nuevo estatus';
         }
         field(6; Reason; Text[150])
         {
-            Caption = 'Reason';
+            Caption = 'Motivo';
         }
         field(7; UserID; Code[50])
         {
-            Caption = 'User ID';
+            Caption = 'ID de Usuario';
         }
         field(8; ThreatLevelAtEntry; Decimal)
         {
-            Caption = 'Threat Level At Entry';
+            Caption = 'Nivel de amenaza en la entrada';
             DecimalPlaces = 2 : 2;
             Editable = false;
         }

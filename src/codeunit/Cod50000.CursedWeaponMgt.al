@@ -31,18 +31,20 @@ codeunit 50000 "Cursed Weapon Mgt"
 
         // Obtener multiplicador de la tecnica
         Multiplier := 1.0; // Default si no hay tecnica
+
+        // 🟢 CORRECCIÓN: Se utiliza la sintaxis global Enum::"Nombre del Enum"::Opción
         case CursedWeapon.InnateTeq of
-            CursedWeapon.InnateTeq::Infinity:
+            Enum::"Cursed Technique Type"::Infinity:
                 Multiplier := 3.0;
-        CursedWeapon.InnateTeq::NegativeCalm:
+            Enum::"Cursed Technique Type"::NegativeCalm:
                 Multiplier := 2.0;
-        CursedWeapon.InnateTeq::Tetragrammaton:
+            Enum::"Cursed Technique Type"::Tetragrammaton:
                 Multiplier := 2.5;
-        CursedWeapon.InnateTeq::Resonance:
+            Enum::"Cursed Technique Type"::Resonance:
                 Multiplier := 1.8;
-        CursedWeapon.InnateTeq::Unknown:
+            Enum::"Cursed Technique Type"::Unknown:
                 Multiplier := 1.5;
-    end;
+        end;
 
         // Calcular resultado base
         ThreatResult := GradeBase * Multiplier;

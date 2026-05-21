@@ -38,6 +38,13 @@ page 50001 "Cursed Weapon Card"
                 {
                     caption = 'Técnica innata';
                     ApplicationArea = All;
+                    trigger OnValidate()
+                    var
+                        Mgt: Codeunit "Cursed Weapon Mgt";
+                    begin
+                        Mgt.CalculateThreatLevel(Rec);
+                        CurrPage.Update(true);
+                    end;
                 }
                 field(ThreatLevel; Rec.ThreatLevel)
                 {
@@ -105,7 +112,7 @@ page 50001 "Cursed Weapon Card"
         {
             action(CalculateThreat)
             {
-                Caption = 'Calcular nivel de amenaza';
+                Caption = 'Calculate Threat Level';
                 ApplicationArea = All;
                 Image = Calculate;
 
@@ -113,7 +120,13 @@ page 50001 "Cursed Weapon Card"
                 var
                     Mgt: Codeunit "Cursed Weapon Mgt";
                 begin
+                    // 1. Ejecuta el cálculo pasando el registro actual
                     Mgt.CalculateThreatLevel(Rec);
+
+                    // 🟢 CORRECCIÓN A: Volvemos a leer el registro actualizado de la BD
+                    Rec.Get(Rec."No.");
+
+                    // 🟢 CORRECCIÓN B: Forzamos a la pantalla a redibujarse en vivo
                     CurrPage.Update(false);
                 end;
             }

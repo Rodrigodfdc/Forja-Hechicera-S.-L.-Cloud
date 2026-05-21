@@ -108,12 +108,12 @@ page 50001 "Cursed Weapon Card"
                 Caption = 'Calcular nivel de amenaza';
                 ApplicationArea = All;
                 Image = Calculate;
+
                 trigger OnAction()
                 var
                     Mgt: Codeunit "Cursed Weapon Mgt";
                 begin
-                    Mgt.CalculateThreatLevel(Rec."No.");
-                    Rec.Get(Rec."No.");
+                    Mgt.CalculateThreatLevel(Rec);
                     CurrPage.Update(false);
                 end;
             }

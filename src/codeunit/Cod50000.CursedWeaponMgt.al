@@ -4,15 +4,14 @@ codeunit 50000 "Cursed Weapon Mgt"
     // Formula: ThreatLevel = GradeBase x EnergyMultiplier x BonusVotos
     // GradeBase: Special=10, SemiGrade1=8, SemiGrade2=6, Grade1=4, Grade2=2, Grade4=1
     // BonusVotos: si BindingVows <> '' -> resultado x 1.2 (+20%)
-    procedure CalculateThreatLevel(WeaponNo: Code[20])
+    procedure CalculateThreatLevel(var CursedWeapon: Record "Cursed Weapon")
     var
-        CursedWeapon: Record "Cursed Weapon";
         CursedTechnique: Record "Cursed Technique";
         GradeBase: Decimal;
         Multiplier: Decimal;
         ThreatResult: Decimal;
     begin
-        if not CursedWeapon.Get(WeaponNo) then exit;
+        // El registro llega por referencia desde la pantalla o desde el flujo de negocio.
 
         // Calcular GradeBase segun el enum
         case CursedWeapon.CursedGrade of
@@ -35,15 +34,15 @@ codeunit 50000 "Cursed Weapon Mgt"
         case CursedWeapon.InnateTeq of
             CursedWeapon.InnateTeq::Infinity:
                 Multiplier := 3.0;
-            CursedWeapon.InnateTeq::NegativeCalm:
+        CursedWeapon.InnateTeq::NegativeCalm:
                 Multiplier := 2.0;
-            CursedWeapon.InnateTeq::Tetragrammaton:
+        CursedWeapon.InnateTeq::Tetragrammaton:
                 Multiplier := 2.5;
-            CursedWeapon.InnateTeq::Resonance:
+        CursedWeapon.InnateTeq::Resonance:
                 Multiplier := 1.8;
-            CursedWeapon.InnateTeq::Unknown:
+        CursedWeapon.InnateTeq::Unknown:
                 Multiplier := 1.5;
-        end;
+    end;
 
         // Calcular resultado base
         ThreatResult := GradeBase * Multiplier;
@@ -128,7 +127,7 @@ codeunit 50000 "Cursed Weapon Mgt"
         CursedWeapon.Insert(true);
 
         // Calcular ThreatLevel inicial
-        CalculateThreatLevel(ItemNo);
+        CalculateThreatLevel(CursedWeapon);
     end;
 
     // ── GetWeaponSummary ───────────────────────────────────────────────

@@ -8,7 +8,8 @@ pageextension 50002 "Sales Order Ext" extends "Sales Order"
             {
                 ApplicationArea = All;
                 Caption = 'Información de arma maldita';
-                SubPageLink = "Weapon No." = field("No.");
+                Provider = SalesLines; // CORRECCIÓN: Enlaza el contexto a las líneas del pedido
+                SubPageLink = "Weapon No." = field("No."); // Ahora field("No.") evaluará el "No." de la línea (el Item/Arma)
             }
         }
     }

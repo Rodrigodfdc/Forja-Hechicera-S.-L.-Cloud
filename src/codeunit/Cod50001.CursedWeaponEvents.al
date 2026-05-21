@@ -48,13 +48,15 @@ codeunit 50001 "Cursed Weapon Events"
                 AssemblyHeader."Item No.",
                 CursedWeapon.WeaponStatus::Active,
                 'Assembly Order completed');
-            Mgt.CalculateThreatLevel(AssemblyHeader."Item No.");
 
-            // Rellenar la fecha de forja
-            if CursedWeapon.Get(AssemblyHeader."Item No.") then begin
-                CursedWeapon.ForgeDate := Today;
-                CursedWeapon.Modify(true);
-            end;
+            // CORRECCIÓN: Refrescar el registro en memoria para no pisar el estado 'Active'
+            CursedWeapon.Get(AssemblyHeader."Item No.");
+
+            Mgt.CalculateThreatLevel(CursedWeapon);
+
+            // Rellenar la fecha de forja (simplificado, ya no requiere el doble "if Get")
+            CursedWeapon.ForgeDate := Today;
+            CursedWeapon.Modify(true);
         end;
     end;
 

@@ -70,7 +70,7 @@ page 50000 "Cursed Weapon List"
                 begin
                     if CursedWeapon.FindSet() then
                         repeat
-                            Mgt.CalculateThreatLevel(CursedWeapon."No.");
+                            Mgt.CalculateThreatLevel(CursedWeapon);
                         until CursedWeapon.Next() = 0;
                     CurrPage.Update(false);
                 end;

@@ -62,29 +62,35 @@ codeunit 50001 "Cursed Weapon Events"
 
     [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
     local procedure OnAfterPostSalesShipLine(
-        var SalesHeader: Record "Sales Header";
-        SalesInvHdrNo: Code[20];
-        RetRcpHdrNo: Code[20];
-        SalesCrMemoHdrNo: Code[20])
+            var SalesHeader: Record "Sales Header";
+            SalesInvHdrNo: Code[20];
+            RetRcpHdrNo: Code[20];
+            SalesCrMemoHdrNo: Code[20])
     var
-        SalesLine: Record "Sales Line";
+        SalesInvLine: Record "Sales Invoice Line"; // 💡 CAMBIO: Usamos la tabla de líneas de factura registrada
         CursedWeapon: Record "Cursed Weapon";
         Mgt: Codeunit "Cursed Weapon Mgt";
     begin
-        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
-        SalesLine.SetRange("Document No.", SalesHeader."No.");
-        SalesLine.SetRange(Type, SalesLine.Type::Item);
-        if SalesLine.FindSet() then
-            repeat
-                if CursedWeapon.Get(SalesLine."No.") then begin
-                    Mgt.ChangeWeaponStatus(
-                        SalesLine."No.",
-                        CursedWeapon.WeaponStatus::Sold,
-                        StrSubstNo('Sold via Sales Order %1', SalesLine."Document No."));
-                    CursedWeapon.Get(SalesLine."No.");
-                    CursedWeapon.SoldToCustomerNo := SalesHeader."Sell-to Customer No.";
-                    CursedWeapon.Modify(true);
-                end;
-            until SalesLine.Next() = 0;
+        // Si se ha generado una factura registrada con éxito
+        if SalesInvHdrNo <> '' then begin
+            SalesInvLine.SetRange("Document No.", SalesInvHdrNo);
+            SalesInvLine.SetRange(Type, SalesInvLine.Type::Item);
+
+            if SalesInvLine.FindSet() then
+                repeat
+                    if CursedWeapon.Get(SalesInvLine."No.") then begin
+                        // Cambiamos el estado a Sold usando tu función de gestión
+                        Mgt.ChangeWeaponStatus(
+                            SalesInvLine."No.",
+                            CursedWeapon.WeaponStatus::Sold,
+                            StrSubstNo('Sold via Posted Sales Invoice %1', SalesInvHdrNo));
+
+                        // Refrescamos en memoria para guardar el cliente
+                        CursedWeapon.Get(SalesInvLine."No.");
+                        CursedWeapon.SoldToCustomerNo := SalesHeader."Sell-to Customer No.";
+                        CursedWeapon.Modify(true);
+                    end;
+                until SalesInvLine.Next() = 0;
+        end;
     end;
 }

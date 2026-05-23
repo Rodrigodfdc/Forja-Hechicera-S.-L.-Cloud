@@ -12,7 +12,7 @@ pageextension 50003 "Customer Card Ext" extends "Customer Card"
                 {
                     ApplicationArea = All;
                     Caption = '¿Autorizado como Hechicero Senior?';
-                    ToolTip = 'De ser cierto, el cliente podrá comprar armas de Grado 1 y especiales.';
+                    ToolTip = 'De ser cierto, el cliente podrá comprar armas malditas';
                 }
                 field(MaxCursedGrade; Rec.MaxCursedGrade)
                 {

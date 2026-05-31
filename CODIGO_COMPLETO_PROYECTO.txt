@@ -1,0 +1,1705 @@
+================================================================================
+    CODIGO COMPLETO DEL PROYECTO - CURSED WEAPONS MANAGEMENT
+    AL Extension for Business Central
+================================================================================
+
+Fecha de generación: 30 de Mayo de 2026
+Descripción: Extensión AL para Business Central que implementa un dominio de 
+             "Armas Malditas" con gestión completa del ciclo de vida, técnicas 
+             malditas, y cálculo automático del nivel de amenaza.
+
+================================================================================
+                        CONFIGURACIÓN DEL PROYECTO
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: app.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+  "id": "d4907717-652d-4163-bbc7-7992674763b0",
+  "name": "Cursed Weapons Management",
+  "publisher": "Rodrigo de freitas da cruz",
+  "version": "1.0.0.0",
+  "brief": "",
+  "description": "",
+  "privacyStatement": "",
+  "EULA": "",
+  "help": "",
+  "url": "",
+  "logo": "",
+  "dependencies": [],
+  "screenshots": [],
+  "platform": "1.0.0.0",
+  "application": "23.0.0.0",
+  "idRanges": [
+    {
+      "from": 50000,
+      "to": 59999
+    }
+  ],
+  "resourceExposurePolicy": {
+    "allowDebugging": true,
+    "allowDownloadingSource": true,
+    "includeSourceInSymbolFile": true
+  },
+  "runtime": "12.2",
+  "features": [
+    "NoImplicitWith"
+  ]
+
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: .vscode/launch.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Your own server",
+            "request": "launch",
+            "type": "al",
+            "environmentType": "OnPrem",
+            "server": "http://localhost:8080/MSSQLSERVER/",
+            "serverInstance": "MSSQLSERVER",
+            "authentication": "Windows",
+            "startupObjectId": 50000,
+            "startupObjectType": "Page",
+            "breakOnError": "All",
+            "launchBrowser": true,
+            "enableLongRunningSqlStatements": true,
+            "enableSqlInformationDebugger": true,
+            "tenant": "default",
+            "usePublicURLFromServer": true,
+            "schemaUpdateMode": "ForceSync"
+        }
+    ]
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: .vscode/settings.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{
+    "workbench.colorCustomizations": {
+        "activityBar.activeBackground": "#65c89b",
+        "activityBar.background": "#65c89b",
+        "activityBar.foreground": "#15202b",
+        "activityBar.inactiveForeground": "#15202b99",
+        "activityBarBadge.background": "#945bc4",
+        "activityBarBadge.foreground": "#e7e7e7",
+        "commandCenter.border": "#15202b99",
+        "sash.hoverBorder": "#65c89b",
+        "statusBar.background": "#42b883",
+        "statusBar.foreground": "#15202b",
+        "statusBarItem.hoverBackground": "#359268",
+        "statusBarItem.remoteBackground": "#42b883",
+        "statusBarItem.remoteForeground": "#15202b",
+        "titleBar.activeBackground": "#42b883",
+        "titleBar.activeForeground": "#15202b",
+        "titleBar.inactiveBackground": "#42b88399",
+        "titleBar.inactiveForeground": "#15202b99"
+    },
+    "peacock.color": "#42b883"
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: .vscode/rad.json
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+{"Added":[],"Modified":[],"Removed":[]}
+
+================================================================================
+                              TABLAS PRINCIPALES
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/table/Tab50000.CursedWeapon.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+table 50000 "Cursed Weapon"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Arma maldita';
+
+    fields
+    {
+        field(1; "No."; Code[20])
+        {
+            Caption = 'No.';
+            TableRelation = Item;
+        }
+        field(2; ItemNo; Code[20])
+        {
+            Caption = 'Item No.';
+            TableRelation = Item;
+        }
+        field(3; Description; Text[100])
+        {
+            Caption = 'Descripción';
+        }
+        field(4; CursedGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Grado maldito';
+        }
+        field(5; WeaponStatus; Enum "Weapon Status")
+        {
+            Caption = 'Estado del arma';
+            Editable = false; // Solo via CursedWeaponMgt.ChangeWeaponStatus()
+        }
+        field(6; InnateTeq; Enum "Cursed Technique Type")
+        {
+            Caption = 'Técnica innata';
+        }
+        field(7; ForgerName; Text[50])
+        {
+            Caption = 'Nombre del forjador';
+        }
+        field(8; BindingVows; Text[250])
+        {
+            Caption = 'votos vinculantes';
+        }
+        field(9; ThreatLevel; Decimal)
+        {
+            Caption = 'Nivel de amenaza';
+            Editable = false;
+            DecimalPlaces = 2 : 2;
+        }
+        field(10; ForgeDate; Date)
+        {
+            Caption = 'Fecha de forja';
+        }
+        field(11; SoldToCustomerNo; Code[20])
+        {
+            Caption = 'Número de cliente al que se vendió';
+            TableRelation = Customer;
+            Editable = false;
+        }
+        field(12; "No. Series"; Code[20])
+        {
+            Caption = 'No. Series';
+            TableRelation = "No. Series";
+        }
+        field(13; Notes; Text[500])
+        {
+            Caption = 'Notes';
+        }
+    }
+
+    keys
+    {
+        key(PK; "No.") { Clustered = true; }
+        key(Grade; CursedGrade) { }
+        key(Status; WeaponStatus) { }
+    }
+
+
+
+    fieldgroups
+    {
+        // Add changes to field groups here
+    }
+
+    var
+        myInt: Integer;
+
+    trigger OnInsert()
+    begin
+
+    end;
+
+    trigger OnModify()
+    begin
+
+
+    end;
+
+    trigger OnDelete()
+    begin
+
+    end;
+
+    trigger OnRename()
+    begin
+
+    end;
+
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/table/Tab50001.CursedTechnique.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+table 50001 "Cursed Technique"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Técnica maldita';
+
+    fields
+    {
+        field(1; Code; Code[10])
+        {
+            Caption = 'Código';
+        }
+        field(2; Name; Text[50])
+        {
+            Caption = 'Nombre';
+        }
+        field(3; Description; Text[250])
+        {
+            Caption = 'Descripción';
+        }
+        field(4; EnergyMultiplier; Decimal)
+        {
+            Caption = 'Multiplicador de energía';
+            DecimalPlaces = 2 : 2;
+            MinValue = 0.1;
+        }
+        field(5; MinGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Min. Grado requerido';
+        }
+        field(6; IsActive; Boolean)
+        {
+            Caption = '¿Está Activa?';
+            InitValue = true;
+        }
+    }
+
+    keys
+    {
+        key(PK; Code) { Clustered = true; }
+    }
+
+
+    fieldgroups
+    {
+        // Add changes to field groups here
+    }
+
+    var
+        myInt: Integer;
+
+    trigger OnInsert()
+    begin
+
+    end;
+
+    trigger OnModify()
+    begin
+
+    end;
+
+    trigger OnDelete()
+    begin
+
+    end;
+
+    trigger OnRename()
+    begin
+
+    end;
+
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/table/Tab50002.WeaponLifecycleEntry.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+table 50002 "Weapon Lifecycle Entry"
+{
+    DataClassification = CustomerContent;
+    Caption = 'Ciclo de vida del arma';
+
+    fields
+    {
+        field(1; "Entry No."; Integer)
+        {
+            Caption = 'Número de entrada';
+            AutoIncrement = true;
+        }
+        field(2; "Weapon No."; Code[20])
+        {
+            Caption = 'Número del arma';
+            TableRelation = "Cursed Weapon";
+        }
+        field(3; EntryDate; DateTime)
+        {
+            Caption = 'Fecha de entrada';
+        }
+        field(4; OldStatus; Enum "Weapon Status")
+        {
+            Caption = 'Antiguo status';
+        }
+        field(5; NewStatus; Enum "Weapon Status")
+        {
+            Caption = 'Nuevo estatus';
+        }
+        field(6; Reason; Text[150])
+        {
+            Caption = 'Motivo';
+        }
+        field(7; UserID; Code[50])
+        {
+            Caption = 'ID de Usuario';
+        }
+        field(8; ThreatLevelAtEntry; Decimal)
+        {
+            Caption = 'Nivel de amenaza en la entrada';
+            DecimalPlaces = 2 : 2;
+            Editable = false;
+        }
+    }
+
+    keys
+    {
+        key(PK; "Entry No.") { Clustered = true; }
+        key(Weapon; "Weapon No.", EntryDate) { }
+    }
+
+
+    fieldgroups
+    {
+        // Add changes to field groups here
+    }
+
+    var
+        myInt: Integer;
+
+    trigger OnInsert()
+    begin
+
+    end;
+
+    trigger OnModify()
+    begin
+
+    end;
+
+    trigger OnDelete()
+    begin
+
+    end;
+
+    trigger OnRename()
+    begin
+
+    end;
+
+}
+
+================================================================================
+                           ENUMERACIONES
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/enum/Enum50000.CursedGrade.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+enum 50000 "Cursed Grade"
+{
+    Caption = 'Grado maldito';
+    Extensible = true;
+
+    value(0; "Special")
+    {
+        Caption = 'Grado especial';
+    }
+    value(1; "SemiGrade1")
+    {
+        Caption = 'Semi-Grado 1';
+    }
+    value(2; "SemiGrade2")
+    {
+        Caption = 'Semi-Grado 2';
+    }
+    value(3; "Grade1")
+    {
+        Caption = 'Grado 1';
+    }
+    value(4; "Grade2")
+    {
+        Caption = 'Grado 2';
+    }
+    value(5; "Grade4")
+    {
+        Caption = 'Grado 4';
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/enum/Enum50001.WeaponStatus.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+enum 50001 "Weapon Status"
+{
+    Caption = 'Estado del arma';
+    Extensible = true;
+
+    value(0; "Dormant")
+    {
+        // Estado inicial al crear
+        Caption = 'Inactivo';
+    }
+    value(1; "Active")
+    {   // Al completar Assembly Order
+        Caption = 'Activo';
+    }
+    value(2; "Sealed")
+    {   // Sellada temporalmente
+        Caption = 'Sellada temporalmente';
+    }
+    // Sellada temporalmente
+    value(3; "Destroyed")
+    {
+        // Destruida
+        Caption = 'Destruida';
+    }
+    value(4; "Sold")
+    {
+        Caption = 'Vendida';
+    }      // Al contabilizar albaran
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/enum/Enum50002.CursedTechniqueType.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+enum 50002 "Cursed Technique Type"
+{
+    Caption = 'Tipo de técnica maldita';
+    Extensible = true;
+
+    value(0; "None")
+    {
+        Caption = 'None';
+    }           // x1.0
+    value(1; "Infinity")
+    {
+        Caption = 'Infinity';
+    }       // x3.0 - Gojo
+    value(2; "NegativeCalm")
+    {
+        Caption = 'Negative Calm';
+    }  // x2.0 - Nanami
+    value(3; "Tetragrammaton")
+    {
+        Caption = 'Tetragrammaton';
+    } // x2.5 - Maki
+    value(4; "Resonance")
+    {
+        Caption = 'Resonance';
+    }      // x1.8 - Nobara
+    value(5; "Unknown")
+    {
+        Caption = 'Unknown';
+    }        // x1.5
+}
+
+================================================================================
+                          CODEUNITS - LÓGICA DE NEGOCIO
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/codeunit/Cod50000.CursedWeaponMgt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+codeunit 50000 "Cursed Weapon Mgt"
+{
+    // ── CalculateThreatLevel ───────────────────────────────────────────
+    // Formula: ThreatLevel = GradeBase x EnergyMultiplier x BonusVotos
+    // GradeBase: Special=10, SemiGrade1=8, SemiGrade2=6, Grade1=4, Grade2=2, Grade4=1
+    // BonusVotos: si BindingVows <> '' -> resultado x 1.2 (+20%)
+    procedure CalculateThreatLevel(var CursedWeapon: Record "Cursed Weapon")
+    var
+        CursedTechnique: Record "Cursed Technique";
+        GradeBase: Decimal;
+        Multiplier: Decimal;
+        ThreatResult: Decimal;
+    begin
+        // El registro llega por referencia desde la pantalla o desde el flujo de negocio.
+
+        // Calcular GradeBase segun el enum
+        case CursedWeapon.CursedGrade of
+            CursedWeapon.CursedGrade::Special:
+                GradeBase := 10;
+            CursedWeapon.CursedGrade::SemiGrade1:
+                GradeBase := 8;
+            CursedWeapon.CursedGrade::SemiGrade2:
+                GradeBase := 6;
+            CursedWeapon.CursedGrade::Grade1:
+                GradeBase := 4;
+            CursedWeapon.CursedGrade::Grade2:
+                GradeBase := 2;
+            CursedWeapon.CursedGrade::Grade4:
+                GradeBase := 1;
+        end;
+
+        // Obtener multiplicador de la tecnica
+        Multiplier := 1.0; // Default si no hay tecnica
+
+        // 🟢 CORRECCIÓN: Se utiliza la sintaxis global Enum::"Nombre del Enum"::Opción
+        case CursedWeapon.InnateTeq of
+            Enum::"Cursed Technique Type"::Infinity:
+                Multiplier := 3.0;
+            Enum::"Cursed Technique Type"::NegativeCalm:
+                Multiplier := 2.0;
+            Enum::"Cursed Technique Type"::Tetragrammaton:
+                Multiplier := 2.5;
+            Enum::"Cursed Technique Type"::Resonance:
+                Multiplier := 1.8;
+            Enum::"Cursed Technique Type"::Unknown:
+                Multiplier := 1.5;
+        end;
+
+        // Calcular resultado base
+        ThreatResult := GradeBase * Multiplier;
+
+        // Aplicar bonus si tiene votos de vinculacion
+        if CursedWeapon.BindingVows <> '' then
+            ThreatResult := ThreatResult * 1.2;
+
+        // Actualizar el campo
+        CursedWeapon.ThreatLevel := ThreatResult;
+        CursedWeapon.Modify(true);
+    end;
+
+    // ── ValidateSaleAuthorization ──────────────────────────────────────
+    // Bloquea la venta si el cliente no tiene autorizacion para el grado
+    procedure ValidateSaleAuthorization(ItemNo: Code[20]; CustomerNo: Code[20])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        Customer: Record Customer;
+    begin
+        if not CursedWeapon.Get(ItemNo) then exit;
+        if not Customer.Get(CustomerNo) then exit;
+
+        if CursedWeapon.CursedGrade in
+           [CursedWeapon.CursedGrade::Special, CursedWeapon.CursedGrade::Grade1]
+        then
+            if not Customer.SeniorHechiceroAuthorized then
+                Error('Customer %1 is not authorized to purchase %2 grade weapons. ' +
+                      'Enable Senior Hechicero Authorization on the customer card.',
+                      CustomerNo, CursedWeapon.CursedGrade);
+    end;
+
+    // ── ChangeWeaponStatus ─────────────────────────────────────────────
+    // Cambia el estado y escribe en WeaponLifecycleEntry
+    procedure ChangeWeaponStatus(WeaponNo: Code[20]; NewStatus: Enum "Weapon Status"; Reason: Text[150])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        LifecycleEntry: Record "Weapon Lifecycle Entry";
+        LastEntry: Record "Weapon Lifecycle Entry";
+        NextEntryNo: Integer;
+    begin
+        if not CursedWeapon.Get(WeaponNo) then exit;
+
+        // Calcular el siguiente EntryNo
+        NextEntryNo := 1;
+        if LastEntry.FindLast() then
+            NextEntryNo := LastEntry."Entry No." + 1;
+
+        // Insertar entrada en el libro de historial
+        LifecycleEntry.Init();
+        LifecycleEntry."Entry No." := NextEntryNo;
+        LifecycleEntry."Weapon No." := WeaponNo;
+        LifecycleEntry.EntryDate := CurrentDateTime();
+        LifecycleEntry.OldStatus := CursedWeapon.WeaponStatus;
+        LifecycleEntry.NewStatus := NewStatus;
+        LifecycleEntry.Reason := Reason;
+        LifecycleEntry.UserID := CopyStr(UserId(), 1, 50);
+        LifecycleEntry.ThreatLevelAtEntry := CursedWeapon.ThreatLevel;
+        LifecycleEntry.Insert(true);
+
+        // Cambiar el estado en la tabla CursedWeapon
+        CursedWeapon.WeaponStatus := NewStatus;
+        CursedWeapon.Modify(true);
+    end;
+
+    // ── CreateCursedWeaponFromItem ─────────────────────────────────────
+    // Crea el registro inicial en CursedWeapon desde un Item
+    procedure CreateCursedWeaponFromItem(ItemNo: Code[20])
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        Item: Record Item;
+    begin
+        // Evitar duplicados
+        if CursedWeapon.Get(ItemNo) then exit;
+        if not Item.Get(ItemNo) then exit;
+
+        CursedWeapon.Init();
+        CursedWeapon."No." := ItemNo;
+        CursedWeapon.ItemNo := ItemNo;
+        CursedWeapon.Description := Item.Description;
+        CursedWeapon.WeaponStatus := CursedWeapon.WeaponStatus::Dormant;
+        CursedWeapon.Insert(true);
+
+        // Calcular ThreatLevel inicial
+        CalculateThreatLevel(CursedWeapon);
+    end;
+
+    // ── GetWeaponSummary ───────────────────────────────────────────────
+    // Devuelve texto resumen para notificaciones y mensajes
+    procedure GetWeaponSummary(WeaponNo: Code[20]): Text
+    var
+        CursedWeapon: Record "Cursed Weapon";
+    begin
+        if not CursedWeapon.Get(WeaponNo) then
+            exit(WeaponNo);
+
+        exit(StrSubstNo('[%1] %2 — Grade: %3 — Threat: %4',
+            CursedWeapon."No.",
+            CursedWeapon.Description,
+            CursedWeapon.CursedGrade,
+            CursedWeapon.ThreatLevel));
+    end;
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/codeunit/Cod50001.CursedWeaponEvents.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+codeunit 50001 "Cursed Weapon Events"
+{
+    // ── Suscriptor 1b ─────────────────────────────────────────────────
+    // Cuando se modifica un articulo existente y se activa IsCursedWeapon,
+    // crea el registro en CursedWeapon si no existia ya.
+    [EventSubscriber(ObjectType::Table, Database::Item, 'OnAfterModifyEvent', '', false, false)]
+    local procedure OnAfterModifyItem(var Rec: Record Item; var xRec: Record Item; RunTrigger: Boolean)
+    var
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        if Rec.IsCursedWeapon and not xRec.IsCursedWeapon then
+            Mgt.CreateCursedWeaponFromItem(Rec."No.");
+    end;
+
+    // ── Suscriptor 2 ──────────────────────────────────────────────────
+    // Antes de liberar un pedido de venta, valida que el cliente
+    // tiene autorizacion para el grado de cada arma maldita en las lineas.
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Release Sales Document", 'OnBeforeReleaseSalesDoc', '', false, false)]
+    local procedure OnBeforeReleaseSalesDoc(var SalesHeader: Record "Sales Header")
+    var
+        SalesLine: Record "Sales Line";
+        CursedWeapon: Record "Cursed Weapon";
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        SalesLine.SetRange("Document Type", SalesHeader."Document Type");
+        SalesLine.SetRange("Document No.", SalesHeader."No.");
+        SalesLine.SetRange(Type, SalesLine.Type::Item);
+        if SalesLine.FindSet() then
+            repeat
+                if CursedWeapon.Get(SalesLine."No.") then
+                    Mgt.ValidateSaleAuthorization(
+                        SalesLine."No.",
+                        SalesHeader."Sell-to Customer No.");
+            until SalesLine.Next() = 0;
+    end;
+
+    // ── Suscriptor 3 ──────────────────────────────────────────────────
+    // Al completar un ensamblado, cambia el estado del arma
+    // de Dormant a Active y recalcula el ThreatLevel.
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Assembly-Post", 'OnAfterPost', '', false, false)]
+    local procedure OnAfterPostAssemblyOrder(var AssemblyHeader: Record "Assembly Header")
+    var
+        CursedWeapon: Record "Cursed Weapon";
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        if CursedWeapon.Get(AssemblyHeader."Item No.") then begin
+            Mgt.ChangeWeaponStatus(
+                AssemblyHeader."Item No.",
+                CursedWeapon.WeaponStatus::Active,
+                'Assembly Order completed');
+
+            // CORRECCIÓN: Refrescar el registro en memoria para no pisar el estado 'Active'
+            CursedWeapon.Get(AssemblyHeader."Item No.");
+
+            Mgt.CalculateThreatLevel(CursedWeapon);
+
+            // Rellenar la fecha de forja (simplificado, ya no requiere el doble "if Get")
+            CursedWeapon.ForgeDate := Today;
+            CursedWeapon.Modify(true);
+        end;
+    end;
+
+    [EventSubscriber(ObjectType::Codeunit, Codeunit::"Sales-Post", 'OnAfterPostSalesDoc', '', false, false)]
+    local procedure OnAfterPostSalesShipLine(
+            var SalesHeader: Record "Sales Header";
+            SalesInvHdrNo: Code[20];
+            RetRcpHdrNo: Code[20];
+            SalesCrMemoHdrNo: Code[20])
+    var
+        SalesInvLine: Record "Sales Invoice Line"; // 💡 CAMBIO: Usamos la tabla de líneas de factura registrada
+        CursedWeapon: Record "Cursed Weapon";
+        Mgt: Codeunit "Cursed Weapon Mgt";
+    begin
+        // Si se ha generado una factura registrada con éxito
+        if SalesInvHdrNo <> '' then begin
+            SalesInvLine.SetRange("Document No.", SalesInvHdrNo);
+            SalesInvLine.SetRange(Type, SalesInvLine.Type::Item);
+
+            if SalesInvLine.FindSet() then
+                repeat
+                    if CursedWeapon.Get(SalesInvLine."No.") then begin
+                        // Cambiamos el estado a Sold usando tu función de gestión
+                        Mgt.ChangeWeaponStatus(
+                            SalesInvLine."No.",
+                            CursedWeapon.WeaponStatus::Sold,
+                            StrSubstNo('Sold via Posted Sales Invoice %1', SalesInvHdrNo));
+
+                        // Refrescamos en memoria para guardar el cliente
+                        CursedWeapon.Get(SalesInvLine."No.");
+                        CursedWeapon.SoldToCustomerNo := SalesHeader."Sell-to Customer No.";
+                        CursedWeapon.Modify(true);
+                    end;
+                until SalesInvLine.Next() = 0;
+        end;
+    end;
+}
+
+================================================================================
+                        PÁGINAS - INTERFAZ DE USUARIO
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50000.CursedWeaponList.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50000 "Cursed Weapon List"
+{
+    PageType = List;
+    SourceTable = "Cursed Weapon";
+    Caption = 'Armas malditas';
+    CardPageId = "Cursed Weapon Card";
+    Editable = false;
+    UsageCategory = Lists;
+    ApplicationArea = All;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(WeaponList)
+            {
+                field("No."; Rec."No.")
+                {
+                    Caption = 'Número';
+                    ApplicationArea = All;
+                }
+                field(Description; Rec.Description)
+                {
+                    Caption = 'Descripción';
+                    ApplicationArea = All;
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    Caption = 'Grado maldito';
+                    ApplicationArea = All;
+                }
+                field(WeaponStatus; Rec.WeaponStatus)
+                {
+                    Caption = 'Estado del arma';
+                    ApplicationArea = All;
+                    StyleExpr = StatusStyle;
+                }
+                field(ThreatLevel; Rec.ThreatLevel)
+                {
+                    Caption = 'Nivel de amenaza';
+                    ApplicationArea = All;
+                }
+                field(ForgerName; Rec.ForgerName)
+                {
+                    Caption = 'Nombre del forjador';
+                    ApplicationArea = All;
+                }
+                field(InnateTeq; Rec.InnateTeq)
+                {
+                    Caption = 'Técnica innata';
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(CalculateAll)
+            {
+                Caption = 'Recalculate All Threat Levels';
+                ApplicationArea = All;
+                Image = Calculate;
+                trigger OnAction()
+                var
+                    CursedWeapon: Record "Cursed Weapon";
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                begin
+                    if CursedWeapon.FindSet() then
+                        repeat
+                            Mgt.CalculateThreatLevel(CursedWeapon);
+                        until CursedWeapon.Next() = 0;
+                    CurrPage.Update(false);
+                end;
+            }
+        }
+    }
+
+    var
+        StatusStyle: Text;
+
+    trigger OnAfterGetRecord()
+    begin
+        case Rec.WeaponStatus of
+            Rec.WeaponStatus::Active:
+                StatusStyle := 'Favorable';
+            Rec.WeaponStatus::Sold:
+                StatusStyle := 'Strong';
+            Rec.WeaponStatus::Sealed:
+                StatusStyle := 'Attention';
+            Rec.WeaponStatus::Destroyed:
+                StatusStyle := 'Unfavorable';
+            else
+                StatusStyle := 'StandardAccent';
+        end;
+    end;
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50001.CursedWeaponCard.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50001 "Cursed Weapon Card"
+{
+    PageType = Card;
+    SourceTable = "Cursed Weapon";
+    Caption = 'Arma maldita';
+    UsageCategory = None;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                Caption = 'General';
+                field("No."; Rec."No.")
+                {
+                    caption = 'Número';
+                    ApplicationArea = All;
+                    ToolTip = 'Weapon identifier.';
+                }
+                field(Description; Rec.Description)
+                {
+                    caption = 'Descripción';
+                    ApplicationArea = All;
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    caption = 'Grado maldito';
+                    ApplicationArea = All;
+                }
+                field(WeaponStatus; Rec.WeaponStatus)
+                {
+                    caption = 'Estado del arma';
+                    ApplicationArea = All;
+                    StyleExpr = StatusStyle;
+                }
+                field(InnateTeq; Rec.InnateTeq)
+                {
+                    caption = 'Técnica innata';
+                    ApplicationArea = All;
+                    trigger OnValidate()
+                    var
+                        Mgt: Codeunit "Cursed Weapon Mgt";
+                    begin
+                        Mgt.CalculateThreatLevel(Rec);
+                        CurrPage.Update(true);
+                    end;
+                }
+                field(ThreatLevel; Rec.ThreatLevel)
+                {
+                    caption = 'Nivel de amenaza';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+            }
+            group(ForgeDetails)
+            {
+                Caption = 'Forge Details';
+                field(ForgerName; Rec.ForgerName)
+                {
+                    caption = 'Nombre del forjador';
+                    ApplicationArea = All;
+                }
+                field(ForgeDate; Rec.ForgeDate)
+                {
+                    caption = 'Fecha de forja';
+                    ApplicationArea = All;
+                }
+                field(BindingVows; Rec.BindingVows)
+                {
+                    caption = 'votos vinculantes';
+                    ApplicationArea = All;
+                    MultiLine = true;
+                }
+            }
+            group(SaleInfo)
+            {
+                Caption = 'Sale Information';
+                field(SoldToCustomerNo; Rec.SoldToCustomerNo)
+                {
+                    caption = 'Vendida al cliente';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+            }
+            group(Notes)
+            {
+                Caption = 'Notes';
+                field(NotesField; Rec.Notes)
+                {
+                    caption = 'Notas';
+                    ApplicationArea = All;
+                    ShowCaption = false;
+                    MultiLine = true;
+                }
+            }
+        }
+        area(FactBoxes)
+        {
+            part(LifecyclePart; "Weapon Lifecycle List Part")
+            {
+                ApplicationArea = All;
+                Caption = 'ciclo de vida del arma ';
+                SubPageLink = "Weapon No." = field("No.");
+            }
+        }
+    }
+
+    actions
+    {
+        area(Processing)
+        {
+            action(CalculateThreat)
+            {
+                Caption = 'Calculate Threat Level';
+                ApplicationArea = All;
+                Image = Calculate;
+
+                trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                begin
+                    // 1. Ejecuta el cálculo pasando el registro actual
+                    Mgt.CalculateThreatLevel(Rec);
+
+                    // 🟢 CORRECCIÓN A: Volvemos a leer el registro actualizado de la BD
+                    Rec.Get(Rec."No.");
+
+                    // 🟢 CORRECCIÓN B: Forzamos a la pantalla a redibujarse en vivo
+                    CurrPage.Update(false);
+                end;
+            }
+            action(ChangeStatus)
+            {
+                Caption = 'Cambiar estado';
+                ApplicationArea = All;
+                Image = ChangeStatus;
+                trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                    NewStatus: Enum "Weapon Status";
+                    Reason: Text[150];
+                begin
+                    // Aqui puedes abrir un dialogo o pedir al usuario el nuevo estado
+                    // Simplificado: cambia a Active como ejemplo
+                    Reason := 'Manual status change';
+                    Mgt.ChangeWeaponStatus(Rec."No.", NewStatus, Reason);
+                    Rec.Get(Rec."No.");
+                    CurrPage.Update(false);
+                end;
+            }
+        }
+    }
+
+    var
+        StatusStyle: Text;
+
+    trigger OnAfterGetRecord()
+    begin
+        case Rec.WeaponStatus of
+            Rec.WeaponStatus::Active:
+                StatusStyle := 'Favorable';
+            Rec.WeaponStatus::Sold:
+                StatusStyle := 'Strong';
+            Rec.WeaponStatus::Sealed:
+                StatusStyle := 'Attention';
+            Rec.WeaponStatus::Destroyed:
+                StatusStyle := 'Unfavorable';
+            else
+                StatusStyle := 'StandardAccent';
+        end;
+    end;
+
+    trigger OnNewRecord(BelowxRec: Boolean)
+    var
+        NoSeriesMgt: Codeunit "NoSeriesManagement";
+    begin
+        if Rec."No." = '' then
+            NoSeriesMgt.InitSeries('CW', '', Today, Rec."No.", Rec."No. Series");
+        Rec.WeaponStatus := Rec.WeaponStatus::Dormant;
+    end;
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50002.WeaponLifecycleList.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50002 "Weapon Lifecycle List"
+{
+    PageType = List;
+    SourceTable = "Weapon Lifecycle Entry";
+    Caption = 'Ciclo de vida del arma';
+    Editable = false;
+    InsertAllowed = false;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
+    UsageCategory = Lists;
+    ApplicationArea = All;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(LifecycleEntries)
+            {
+                field("Entry No."; Rec."Entry No.")
+                {
+                    Caption = 'Número de entrada';
+                    ApplicationArea = All;
+                }
+                field("Weapon No."; Rec."Weapon No.")
+                {
+                    Caption = 'Número del arma';
+                    ApplicationArea = All;
+                }
+                field(EntryDate; Rec.EntryDate)
+                {
+                    Caption = 'Fecha de entrada';
+                    ApplicationArea = All;
+                }
+                field(OldStatus; Rec.OldStatus)
+                {
+                    Caption = 'Estado antiguo';
+                    ApplicationArea = All;
+                }
+                field(NewStatus; Rec.NewStatus)
+                {
+                    Caption = 'Nuevo estado';
+                    ApplicationArea = All;
+                }
+                field(Reason; Rec.Reason)
+                {
+                    Caption = 'Razón';
+                    ApplicationArea = All;
+                }
+                field(UserID; Rec.UserID)
+                {
+                    ApplicationArea = All;
+                }
+                field(ThreatLevelAtEntry; Rec.ThreatLevelAtEntry)
+                {
+                    Caption = 'Nivel de amenaza al momento de la entrada';
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50003.CursedTechniquesList.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50003 "Cursed Techniques List"
+{
+    PageType = List;
+    SourceTable = "Cursed Technique";
+    Caption = 'Técnicas malditas';
+    CardPageId = "Cursed Techniques Card";
+    UsageCategory = Lists;
+    ApplicationArea = All;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(TechniqueList)
+            {
+                field(Code; Rec.Code)
+                {
+                    Caption = 'Código';
+                    ApplicationArea = All;
+                }
+                field(Name; Rec.Name)
+                {
+                    Caption = 'Nombre';
+                    ApplicationArea = All;
+                }
+                field(EnergyMultiplier; Rec.EnergyMultiplier)
+                {
+                    Caption = 'Multiplicador de energía';
+                    ApplicationArea = All;
+                }
+                field(MinGrade; Rec.MinGrade)
+                {
+                    Caption = 'Grado mínimo';
+                    ApplicationArea = All;
+                }
+                field(IsActive; Rec.IsActive)
+                {
+                    Caption = 'Activa';
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50004.CursedTechniquesCard.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50004 "Cursed Techniques Card"
+{
+    PageType = Card;
+    SourceTable = "Cursed Technique";
+    Caption = 'Técnica maldita';
+    UsageCategory = None;
+
+    layout
+    {
+        area(Content)
+        {
+            group(General)
+            {
+                Caption = 'General';
+                field(Code; Rec.Code)
+                {
+                    Caption = 'Código';
+                    ApplicationArea = All;
+
+                }
+                field(Name; Rec.Name)
+                {
+                    Caption = 'Nombre';
+                    ApplicationArea = All;
+                }
+                field(EnergyMultiplier; Rec.EnergyMultiplier)
+                {
+                    Caption = 'Multiplicador de energía';
+                    ApplicationArea = All;
+                }
+                field(MinGrade; Rec.MinGrade)
+                {
+                    Caption = 'Grado mínimo';
+                    ApplicationArea = All;
+                }
+                field(IsActive; Rec.IsActive)
+                {
+                    Caption = 'Activa';
+                    ApplicationArea = All;
+                }
+            }
+            group(DescGroup)
+            {
+                Caption = 'Description';
+                field(Description; Rec.Description)
+                {
+                    ApplicationArea = All;
+                    ShowCaption = false;
+                    MultiLine = true;
+                }
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50005.CursedWeaponAPI.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50005 "Cursed Weapon API"
+{
+    Caption = 'API de Armas Malditas';
+    PageType = API;
+    APIGroup = 'cursedWeapons';
+    APIPublisher = 'forjaHechicera';
+    APIVersion = 'v1.0';
+    EntityName = 'cursedWeapon';
+    EntitySetName = 'cursedWeapons';
+    SourceTable = "Cursed Weapon";
+    Editable = false;
+    ODataKeyFields = "No.";
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Group)
+            {
+                field(no; Rec."No.")
+                {
+                    Caption = 'Número';
+                    ApplicationArea = All;
+                }
+                field(description; Rec.Description)
+                {
+                    Caption = 'Descripción';
+                    ApplicationArea = All;
+                }
+                field(cursedGrade; Rec.CursedGrade)
+                {
+                    Caption = 'Grado maldito';
+                    ApplicationArea = All;
+                }
+                field(weaponStatus; Rec.WeaponStatus)
+                {
+                    Caption = 'Estado del arma';
+                    ApplicationArea = All;
+                }
+                field(threatLevel; Rec.ThreatLevel)
+                {
+                    Caption = 'Nivel de amenaza';
+                    ApplicationArea = All;
+                }
+                field(forgerName; Rec.ForgerName)
+                {
+                    Caption = 'Nombre del forjador';
+                    ApplicationArea = All;
+                }
+                field(innateTeq; Rec.InnateTeq)
+                {
+                    Caption = 'Técnica innata';
+                    ApplicationArea = All;
+                }
+                field(forgeDate; Rec.ForgeDate)
+                {
+                    Caption = 'Fecha de forja';
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/page/Pag50006.WeaponLifecycleListPart.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+page 50006 "Weapon Lifecycle List Part"
+{
+    PageType = ListPart;
+    SourceTable = "Weapon Lifecycle Entry";
+    Caption = 'Ciclo de vida del arma';
+    Editable = false;
+    InsertAllowed = false;
+    ModifyAllowed = false;
+    DeleteAllowed = false;
+
+    layout
+    {
+        area(Content)
+        {
+            repeater(Entries)
+            {
+                field(EntryDate; Rec.EntryDate)
+                {
+                    Caption = 'Fecha de entrada';
+                    ApplicationArea = All;
+                }
+                field(OldStatus; Rec.OldStatus)
+                {
+                    Caption = 'Estado antiguo';
+                    ApplicationArea = All;
+                }
+                field(NewStatus; Rec.NewStatus)
+                {
+                    Caption = 'Nuevo estado';
+                    ApplicationArea = All;
+                }
+                field(Reason; Rec.Reason)
+                {
+                    Caption = 'Motivo';
+                    ApplicationArea = All;
+                }
+                field(UserID; Rec.UserID)
+                {
+                    Caption = 'Usuario';
+                    ApplicationArea = All;
+                }
+            }
+        }
+    }
+}
+
+================================================================================
+                    EXTENSIONES DE TABLA - CUSTOM FIELDS
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/tableextension/Tab-Ext50000.ItemTableExt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+tableextension 50000 "Item Table Ext" extends Item
+{
+    fields
+    {
+        field(50100; IsCursedWeapon; Boolean)
+        {
+            Caption = '¿Es un arma maldita?';
+            DataClassification = CustomerContent;
+
+
+        }
+        field(50101; CursedGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Grado maldito';
+            DataClassification = CustomerContent;
+        }
+        field(50102; QuickThreatLevel; Decimal)
+        {
+            Caption = 'Nivel de amenaza';
+            FieldClass = FlowField;
+            CalcFormula = lookup("Cursed Weapon".ThreatLevel
+                where(ItemNo = field("No.")));
+            Editable = false;
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/tableextension/Tab-Ext50001.CustomerTableExt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+tableextension 50001 "Customer Table Ext" extends Customer
+{
+    fields
+    {
+        field(50100; SeniorHechiceroAuthorized; Boolean)
+        {
+            Caption = 'Hechicero Senior Autorizada';
+            DataClassification = CustomerContent;
+        }
+        field(50101; MaxCursedGrade; Enum "Cursed Grade")
+        {
+            Caption = 'Max Cursed Grade';
+            DataClassification = CustomerContent;
+        }
+    }
+}
+
+================================================================================
+                    EXTENSIONES DE PÁGINA - UI EXTENSIONS
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/pageextension/Pag-Ext50000.ItemCardExt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+pageextension 50000 "Item Card Ext" extends "Item Card"
+{
+    layout
+    {
+        addlast(Item)
+        {
+            group(CursedDataGroup)
+            {
+                Caption = 'Datos del arma maldita';
+
+                field(IsCursedWeapon; Rec.IsCursedWeapon)
+                {
+                    Caption = '¿Es un arma maldita?';
+                    ApplicationArea = All;
+                }
+                field(CursedGrade; Rec.CursedGrade)
+                {
+                    Caption = 'Grado maldito';
+                    ApplicationArea = All;
+
+                }
+                field(QuickThreatLevel; Rec.QuickThreatLevel)
+                {
+                    Caption = 'Nivel de amenaza';
+                    ApplicationArea = All;
+                    Editable = false;
+                }
+            }
+        }
+    }
+
+    actions
+    {
+        addlast(processing)
+        {
+            action(ViewCursedWeapon)
+            {
+                Caption = 'View Cursed Weapon';
+                ApplicationArea = All;
+                Image = Item;
+                Visible = Rec.IsCursedWeapon;
+                trigger OnAction()
+                var
+                    CursedWeapon: Record "Cursed Weapon";
+                    CursedWeaponCard: Page "Cursed Weapon Card";
+                begin
+                    if CursedWeapon.Get(Rec."No.") then begin
+                        CursedWeaponCard.SetRecord(CursedWeapon);
+                        CursedWeaponCard.Run();
+                    end;
+                end;
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/pageextension/Pag-Ext50001.ItemListExt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+pageextension 50001 "Item List Ext" extends "Item List"
+{
+    layout
+    {
+        addafter(Description)
+        {
+            field(IsCursedWeapon; Rec.IsCursedWeapon)
+            {
+                ApplicationArea = All;
+                Caption = '¿Es un arma maldita?';
+                Width = 5;
+            }
+            field(CursedGrade; Rec.CursedGrade)
+            {
+                ApplicationArea = All;
+                Caption = 'Grado maldito';
+            }
+        }
+    }
+
+    views
+    {
+        addfirst
+        {
+            view(CursedWeaponsFilter)
+            {
+                Caption = 'Armas malditas';
+                Filters = where(IsCursedWeapon = const(true));
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/pageextension/Pag-Ext50002.SalesOrderExt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+pageextension 50002 "Sales Order Ext" extends "Sales Order"
+{
+    layout
+    {
+        addlast(FactBoxes)
+        {
+            part(CursedWeaponInfo; "Weapon Lifecycle List Part")
+            {
+                ApplicationArea = All;
+                Caption = 'Información de arma maldita';
+                Provider = SalesLines; // CORRECCIÓN: Enlaza el contexto a las líneas del pedido
+                SubPageLink = "Weapon No." = field("No."); // Ahora field("No.") evaluará el "No." de la línea (el Item/Arma)
+            }
+        }
+    }
+}
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/pageextension/Pag-Ext50003.CustomerCardExt.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+pageextension 50003 "Customer Card Ext" extends "Customer Card"
+{
+    layout
+    {
+        addlast(General)
+        {
+            group(CursedAuthorization)
+            {
+                Caption = 'Autorización de armas malditas';
+
+                field(SeniorHechiceroAuthorized; Rec.SeniorHechiceroAuthorized)
+                {
+                    ApplicationArea = All;
+                    Caption = '¿Autorizado como Hechicero Senior?';
+                    ToolTip = 'De ser cierto, el cliente podrá comprar armas malditas';
+                }
+                field(MaxCursedGrade; Rec.MaxCursedGrade)
+                {
+                    ApplicationArea = All;
+                    Caption = 'Grado máximo maldito';
+                    ToolTip = 'El grado máximo de arma maldita que el cliente puede comprar.';
+                }
+            }
+        }
+    }
+}
+
+================================================================================
+                    REPORTES (Estructura Esqueleto)
+================================================================================
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+FILE: src/Rep50000.CursedWeaponInventory.al
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+// report 50000 CursedWeaponInventory
+// {
+//     UsageCategory = ReportsAndAnalysis;
+//     ApplicationArea = All;
+//     DefaultRenderingLayout = LayoutName;
+
+//     // dataset
+//     // {
+//     //     dataitem(DataItemName; SourceTableName)
+//     //     {
+//     //         column(ColumnName; SourceFieldName)
+//     //         {
+
+//     //         }
+//     //     }
+//     // }
+
+//     requestpage
+//     {
+//         AboutTitle = 'Teaching tip title';
+//         AboutText = 'Teaching tip content';
+//         layout
+//         {
+//             area(Content)
+//             {
+//                 group(GroupName)
+//                 {
+//                     // field(Name; SourceExpression)
+//                     // {
+
+//                     // }
+//                 }
+//             }
+//         }
+
+//         actions
+//         {
+//             area(processing)
+//             {
+//                 action(LayoutName)
+//                 {
+
+//                 }
+//             }
+//         }
+//     }
+
+//     rendering
+//     {
+//         layout(LayoutName)
+//         {
+//             Type = Excel;
+//             LayoutFile = 'mySpreadsheet.xlsx';
+//         }
+//     }
+
+//     var
+//         myInt: Integer;
+// }
+
+================================================================================
+                              README PROYECTO
+================================================================================
+
+# Forja-Hechicera-S.-L.-Cloud
+
+## Resumen del proyecto
+
+Esta extensión AL para Business Central implementa un dominio de "Armas Malditas" 
+dentro del módulo estándar.
+
+El proyecto permite gestionar:
+- armas malditas como registros propios en una tabla personalizada,
+- técnicas malditas con multiplicadores de energía,
+- el ciclo de vida completo de las armas, desde su creación hasta su venta,
+- autorizaciones de clientes para comprar grados restringidos,
+- el cálculo automático del nivel de amenaza y su seguimiento histórico.
+
+## Estructura del repositorio
+
+- `src/table/` — tablas de datos principales.
+- `src/enum/` — enumeraciones usadas en tablas y lógica.
+- `src/codeunit/` — lógica empresarial y reglas de negocio.
+- `src/page/` — páginas listas, tarjetas, partes y API.
+- `src/pageextension/` — extensiones de páginas estándar para integración con BC.
+- `src/tableextension/` — campos adicionales en tablas estándar `Item` y `Customer`.
+- `src/report/` — informes definidos como esqueleto.
+
+## Objetos principales
+
+### Tablas
+
+- `Cursed Weapon` (tabla 50000): almacena las armas, su estado, grado, técnica, 
+  nivel de amenaza, fecha de forja y cliente comprador.
+- `Cursed Technique` (tabla 50001): define técnicas malditas con multiplicador 
+  de energía y grado mínimo requerido.
+- `Weapon Lifecycle Entry` (tabla 50002): registra cada cambio de estado de un 
+  arma para auditoría.
+
+### Enumeraciones
+
+- `Cursed Grade` (enum 50000): clasifica el grado maldito de cada arma.
+- `Weapon Status` (enum 50001): define el ciclo de vida del arma 
+  (`Dormant`, `Active`, `Sealed`, `Destroyed`, `Sold`).
+- `Cursed Technique Type` (enum 50002): define el tipo de técnica y su efecto 
+  en el cálculo de amenaza.
+
+### Codeunits
+
+- `Cursed Weapon Mgt` (codeunit 50000): gestiona el cálculo de amenaza, la 
+  validación de ventas, la creación de armas desde `Item` y el registro de 
+  cambios de estado.
+- `Cursed Weapon Events` (codeunit 50001): escucha eventos estándar de 
+  Business Central y desencadena acciones automáticas sobre armas malditas.
+
+## Flujo de negocio
+
+1. Se marca un `Item` como arma maldita usando `IsCursedWeapon`.
+2. Si el artículo se modifica, se crea el registro de `Cursed Weapon` automáticamente.
+3. El cálculo de `ThreatLevel` se basa en el grado del arma y su técnica innata.
+4. Antes de liberar un pedido de venta, se valida si el cliente está autorizado 
+   para comprar el grado del arma.
+5. Al completar un ensamblaje o al registrar una factura, el estado del arma 
+   cambia y se guarda una entrada en el historial de ciclo de vida.
+
+## Páginas y experiencia de usuario
+
+- `Cursed Weapon List` y `Cursed Weapon Card`: gestión y visualización de 
+  armas malditas.
+- `Weapon Lifecycle List` y `Weapon Lifecycle List Part`: seguimiento del 
+  historial de cambios de estado.
+- `Cursed Techniques List` y `Cursed Techniques Card`: mantenimiento de las 
+  técnicas malditas.
+- `Cursed Weapon API`: exposición de datos a través de OData.
+- Extensiones de `Item Card`, `Item List`, `Sales Order` y `Customer Card`: 
+  integran el flujo de armas malditas con los procesos estándar.
+
+## Notas técnicas importantes
+
+- El código AL contiene comentarios explicativos añadidos para facilitar 
+  su comprensión.
+- No se ha modificado la lógica funcional del proyecto; solo se documentó 
+  el código.
+- `CODIGO_COMPLETO_PROYECTO.txt` recopila el código fuente actual del proyecto.
+
+## Recomendaciones de uso
+
+1. Abrir el proyecto en Visual Studio Code con la extensión AL instalada.
+2. Verificar que `app.json` apunta a la versión correcta de Business Central.
+3. Descargar símbolos y compilar la extensión antes de publicarla.
+4. Probar el flujo de arma maldita con un `Item` y la creación/venta desde 
+   el entorno de BC.
+
+## Archivos clave
+
+- `app.json`
+- `README.md`
+- `src/codeunit/`
+- `src/table/`
+- `src/page/`
+
+================================================================================
+                            FIN DEL DOCUMENTO
+================================================================================
+Generado: 30 de Mayo de 2026
+Proyecto: Cursed Weapons Management - AL Extension for Business Central
+================================================================================

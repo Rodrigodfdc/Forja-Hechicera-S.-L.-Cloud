@@ -149,6 +149,44 @@ page 50001 "Cursed Weapon Card"
                     CurrPage.Update(false);
                 end;
             }
+
+            // 🌟 NUEVO BOTÓN: Añádelo justo aquí para la simulación del tribunal
+            action(MarcarDestruido)
+            {
+                Caption = 'Marcar como Destruido';
+                ToolTip = 'Registra la destrucción del activo en combate e impacta el Ledger de seguridad.';
+                ApplicationArea = All;
+                Image = Delete;    // Icono visual de Business Central para roturas/bajas
+                Promoted = true;      // Lo destaca en grande en la interfaz
+                PromotedCategory = Process;
+                PromotedOnly = true;
+
+                trigger OnAction()
+                var
+                    Mgt: Codeunit "Cursed Weapon Mgt";
+                begin
+                    // 1. Validación previa de seguridad
+                    if Rec.WeaponStatus = Rec.WeaponStatus::Destroyed then
+                        Error('Este activo ya consta como destruido en el sistema.');
+
+                    if Rec.WeaponStatus = Rec.WeaponStatus::Sold then
+                        Error('No se puede destruir un activo que ya ha sido facturado y vendido.');
+
+                    // 2. Cuadro de diálogo interactivo para el directo
+                    if Confirm('¿Confirma la destrucción total del activo %1 en el campo de batalla?', false, Rec.Description) then begin
+
+                        // 3. Invocamos tu codeunit de negocio para mutar el estado y escribir en el Ledger
+                        Mgt.ChangeWeaponStatus(Rec."No.", Rec.WeaponStatus::Destroyed, 'Confirmado por la Organización de Hechiceros en combate');
+
+                        // 4. Refrescamos la pantalla para que el tribunal vea el cambio en vivo
+                        Rec.Get(Rec."No.");
+                        CurrPage.Update(false);
+
+                        Message('El activo ha sido dado de baja. Histórico inmutable actualizado.');
+                    end;
+                end;
+            }
+
         }
     }
 
